@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -108,6 +109,11 @@ public class PlayerController : MonoBehaviour
             GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
             newBullet.GetComponent<Bullet>().damage = 1;
             newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
