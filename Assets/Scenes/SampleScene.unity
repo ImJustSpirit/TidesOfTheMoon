@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b788330cce9ca634893a9b41fbd7a34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionSpeed: 10
+  transitionSpeed: 1
   moveConstraint: {fileID: 330585549}
   watchConstraint: {fileID: 330585548}
   originMarker: {fileID: 1719849785}

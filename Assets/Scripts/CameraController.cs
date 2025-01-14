@@ -4,10 +4,14 @@ using UnityEngine.Animations;
 
 public class CameraController : MonoBehaviour
 {
+    private Camera cam;
+
     // Named this way so you don't mix up positionConstraint and PositionConstraint
     public float transitionSpeed = 10;
     public PositionConstraint moveConstraint;
     public LookAtConstraint watchConstraint;
+    private float cameraDistance;
+    private float targetOrthSize;
 
     // Markers
     private GameObject targetMarker;
@@ -18,12 +22,9 @@ public class CameraController : MonoBehaviour
 
     void cameraOrigin()
     {
-        // Enable Position and LookAt constraints
-        moveConstraint.enabled = true;
-        watchConstraint.enabled = true;
-
+        targetOrthSize = 3;
         targetMarker = originMarker;
-        Camera.main.orthographic = false;
+        cameraDistance = Vector3.Distance(cam.transform.position, targetMarker.transform.position);
     }
 
     void cameraTopDownV()
@@ -32,8 +33,9 @@ public class CameraController : MonoBehaviour
         moveConstraint.enabled = false;
         watchConstraint.enabled = false;
 
+        targetOrthSize = 5;
         targetMarker = topDownVMarker;
-        Camera.main.orthographic = true;
+        cameraDistance = Vector3.Distance(cam.transform.position, targetMarker.transform.position);
     }
     void cameraTopDownH()
     {
@@ -41,8 +43,9 @@ public class CameraController : MonoBehaviour
         moveConstraint.enabled = false;
         watchConstraint.enabled = false;
 
+        targetOrthSize = 5;
         targetMarker = topDownHMarker;
-        Camera.main.orthographic = true;
+        cameraDistance = Vector3.Distance(cam.transform.position, targetMarker.transform.position);
     }
     void cameraSideScroller()
     {
@@ -50,18 +53,33 @@ public class CameraController : MonoBehaviour
         moveConstraint.enabled = false;
         watchConstraint.enabled = false;
 
+        targetOrthSize = 5;
         targetMarker = sideScrollerMarker;
-        Camera.main.orthographic = true;
+        cameraDistance = Vector3.Distance(cam.transform.position, targetMarker.transform.position);
     }
 
     private void Start()
     {
         targetMarker = originMarker;
+        cam = Camera.main;
     }
     void Update()
     {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetMarker.transform.position, transitionSpeed * Time.deltaTime);
-        Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, targetMarker.transform.rotation, transitionSpeed * Time.deltaTime);
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetOrthSize, transitionSpeed * Time.deltaTime);
+        if ((-0.2f < targetOrthSize - cam.orthographicSize) && (targetOrthSize - cam.orthographicSize < 0.2f)) { cam.orthographicSize = targetOrthSize; }
+
+        cam.transform.position = Vector3.Lerp(cam.transform.position, targetMarker.transform.position, transitionSpeed * Time.deltaTime);
+        cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, targetMarker.transform.rotation, transitionSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(cam.transform.position, targetMarker.transform.position) < 0.05f)
+        {
+            cam.transform.position = targetMarker.transform.position;
+            cam.transform.rotation = targetMarker.transform.rotation;
+            if (targetMarker == originMarker) { watchConstraint.enabled = true; moveConstraint.enabled = true; }
+        }
+        if ((cameraDistance / 2 > Vector3.Distance(cam.transform.position, targetMarker.transform.position)) && (targetMarker == originMarker)) { cam.orthographic = false; }
+        if (((cameraDistance / 5)*4 > Vector3.Distance(cam.transform.position, targetMarker.transform.position)) && (targetMarker != originMarker)) { cam.orthographic = true; }
+
         if (Input.GetKeyDown(KeyCode.T)) { cameraTopDownV(); } // Top Down Vertical
         if (Input.GetKeyDown(KeyCode.H)) { cameraTopDownH(); } // Top Down Horizontal
         if (Input.GetKeyDown(KeyCode.U)) { cameraOrigin(); } // Default Cam
