@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         {
             if ((shipRotationZ < 0.5f) && (shipRotationZ > -0.5f)) { shipRotationZ = 0; }
         }
-
+        // ok
         if (shootTimer < shootCooldown)
         {
             shootTimer += Time.deltaTime;
