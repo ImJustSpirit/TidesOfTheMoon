@@ -19,6 +19,11 @@ public class PlayerController : MonoBehaviour
     public GameObject LeftMarker;
     public GameObject RightMarker;
 
+    private void Start()
+    {
+        //Application.targetFrameRate = 180;
+    }
+
     void Update()
     {
         // WASD
@@ -71,9 +76,15 @@ public class PlayerController : MonoBehaviour
         if (shipRotationZ < 0) { shipRotationZ += (shipRotateSpeed / 2) * Time.deltaTime; }
         else if (shipRotationZ > 0) { shipRotationZ -= (shipRotateSpeed / 2) * Time.deltaTime; }
 
-        // Rotation Snap
-        if ((shipRotationX < 1) && (shipRotationX > -1)) { shipRotationX = 0; }
-        if ((shipRotationZ < 1) && (shipRotationZ > -1)) { shipRotationZ = 0; }
+        // Rotation Snap, only snaps an axis when related inputs are off
+        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        {
+            if ((shipRotationX < 0.5f) && (shipRotationX > -0.5f)) { shipRotationX = 0; }
+        }
+        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        {
+            if ((shipRotationZ < 0.5f) && (shipRotationZ > -0.5f)) { shipRotationZ = 0; }
+        }
 
         if (shootTimer < shootCooldown)
         {
