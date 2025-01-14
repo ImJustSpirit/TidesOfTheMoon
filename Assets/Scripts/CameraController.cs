@@ -1,11 +1,30 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
 
 public class CameraController : MonoBehaviour
 {
     // Named this way so you don't mix up positionConstraint and PositionConstraint
+    public float transitionSpeed = 10;
     public PositionConstraint moveConstraint;
     public LookAtConstraint watchConstraint;
+
+    // Markers
+    private GameObject targetMarker;
+    public GameObject originMarker;
+    public GameObject topDownVMarker;
+    public GameObject topDownHMarker;
+    public GameObject sideScrollerMarker;
+
+    void cameraOrigin()
+    {
+        // Enable Position and LookAt constraints
+        moveConstraint.enabled = true;
+        watchConstraint.enabled = true;
+
+        targetMarker = originMarker;
+        Camera.main.orthographic = false;
+    }
 
     void cameraTopDownV()
     {
@@ -13,8 +32,7 @@ public class CameraController : MonoBehaviour
         moveConstraint.enabled = false;
         watchConstraint.enabled = false;
 
-        Camera.main.transform.position = new Vector3(0, 5, 4);
-        Camera.main.transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+        targetMarker = topDownVMarker;
         Camera.main.orthographic = true;
     }
     void cameraTopDownH()
@@ -23,8 +41,7 @@ public class CameraController : MonoBehaviour
         moveConstraint.enabled = false;
         watchConstraint.enabled = false;
 
-        Camera.main.transform.position = new Vector3(0, 5, 8);
-        Camera.main.transform.rotation = Quaternion.Euler(new Vector3(90, 0, 90));
+        targetMarker = topDownHMarker;
         Camera.main.orthographic = true;
     }
     void cameraSideScroller()
@@ -33,27 +50,21 @@ public class CameraController : MonoBehaviour
         moveConstraint.enabled = false;
         watchConstraint.enabled = false;
 
-        Camera.main.transform.position = new Vector3(5, 0, 8);
-        Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+        targetMarker = sideScrollerMarker;
         Camera.main.orthographic = true;
     }
 
-    void cameraDefault()
+    private void Start()
     {
-        // Enable Position and LookAt constraints
-        moveConstraint.enabled = true;
-        watchConstraint.enabled = true;
-
-        Camera.main.transform.position = new Vector3(0, 0, -5);
-        Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-        Camera.main.orthographic = false;
+        targetMarker = originMarker;
     }
-
     void Update()
     {
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetMarker.transform.position, transitionSpeed * Time.deltaTime);
+        Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, targetMarker.transform.rotation, transitionSpeed * Time.deltaTime);
         if (Input.GetKeyDown(KeyCode.T)) { cameraTopDownV(); } // Top Down Vertical
         if (Input.GetKeyDown(KeyCode.H)) { cameraTopDownH(); } // Top Down Horizontal
-        if (Input.GetKeyDown(KeyCode.U)) { cameraDefault(); } // Default Cam
+        if (Input.GetKeyDown(KeyCode.U)) { cameraOrigin(); } // Default Cam
         if (Input.GetKeyDown(KeyCode.Y)) { cameraSideScroller(); } // Side Scroller
     }
 }
