@@ -326,6 +326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b788330cce9ca634893a9b41fbd7a34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveConstraint: {fileID: 330585549}
+  watchConstraint: {fileID: 330585548}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
