@@ -4,13 +4,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public int speed = 10;
-    private float shipRotationZ = 0;
     private float shipRotationX = 0;
-    public float shipRotateSpeed = 250;
+    private float shipRotationZ = 0;
+    public float shipRotateSpeed = 450;
 
     // Bullet Variables
     public GameObject playerBullet;
-    public float shootCooldown = 0.2f;
+    public float shootCooldown = 0.1f;
     private float shootTimer;
     public float damage = 1;
     public float bulletSpeed = 30;
@@ -22,24 +22,29 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // WASD
-        if (Input.GetKey(KeyCode.W) && transform.position.y < 2) {
+        if (Input.GetKey(KeyCode.W) && transform.position.y < 2)
+        {
+            // Movement
             transform.position += new Vector3(0, speed * Time.deltaTime, 0);
             if (transform.position.y > 2) { transform.position = new Vector3(transform.position.x, 2, transform.position.z); }
 
             //Lean
             shipRotationX -= shipRotateSpeed * Time.deltaTime;
-            if (shipRotationX < -30) { shipRotationX = -30; }
+            if (shipRotationX < -45) { shipRotationX = -45; }
         }
-        if (Input.GetKey(KeyCode.S) && transform.position.y > -2) {
+        if (Input.GetKey(KeyCode.S) && transform.position.y > -2)
+        {
+            // Movement
             transform.position -= new Vector3(0, speed * Time.deltaTime, 0);
             if (transform.position.y < -2) { transform.position = new Vector3(transform.position.x, -2, transform.position.z); }
 
             //Lean
             shipRotationX += shipRotateSpeed * Time.deltaTime;
-            if (shipRotationX > 30) { shipRotationX = 30; }
+            if (shipRotationX > 45) { shipRotationX = 45; }
         }
         if (Input.GetKey(KeyCode.D) && transform.position.x < 4)
         {
+            // Movement
             transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
             if (transform.position.x > 4) { transform.position = new Vector3(4, transform.position.y, transform.position.z); }
 
@@ -49,6 +54,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A) && transform.position.x > -4)
         {
+            // Movement
             transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
             if (transform.position.x < -4) { transform.position = new Vector3(-4, transform.position.y, transform.position.z); }
 
@@ -59,12 +65,22 @@ public class PlayerController : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(new Vector3(shipRotationX, 0, shipRotationZ));
 
+        // Auto Zero Rotation
+        if (shipRotationX < 0) { shipRotationX += (shipRotateSpeed / 2) * Time.deltaTime; }
+        else if (shipRotationX > 0) { shipRotationX -= (shipRotateSpeed / 2) * Time.deltaTime; }
+        if (shipRotationZ < 0) { shipRotationZ += (shipRotateSpeed / 2) * Time.deltaTime; }
+        else if (shipRotationZ > 0) { shipRotationZ -= (shipRotateSpeed / 2) * Time.deltaTime; }
+
+        // Rotation Snap
+        if ((shipRotationX < 1) && (shipRotationX > -1)) { shipRotationX = 0; }
+        if ((shipRotationZ < 1) && (shipRotationZ > -1)) { shipRotationZ = 0; }
+
         if (shootTimer < shootCooldown)
         {
             shootTimer += Time.deltaTime;
         }
 
-        // Space
+        // Shootning
         if (Input.GetKey(KeyCode.Space) && shootTimer>=shootCooldown)
         {
             shootTimer = 0;
