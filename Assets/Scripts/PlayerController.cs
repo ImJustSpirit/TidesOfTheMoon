@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -14,7 +15,9 @@ public class PlayerController : MonoBehaviour
     public float damage = 1;
     public float bulletSpeed = 30;
     private bool shootSide = false;
-    private float bulletOffset;
+    private Vector3 bulletOffset;
+    public GameObject LeftMarker;
+    public GameObject RightMarker;
 
     void Update()
     {
@@ -67,15 +70,15 @@ public class PlayerController : MonoBehaviour
             shootTimer = 0;
             if (shootSide)
             {
-                bulletOffset = 1;
+                bulletOffset = RightMarker.transform.position;
                 shootSide = false;
             }
             else
             {
-                bulletOffset = -1;
+                bulletOffset = LeftMarker.transform.position;
                 shootSide = true;
             }
-            GameObject newBullet = Instantiate(playerBullet, new Vector3(transform.position.x + bulletOffset, transform.position.y, transform.position.z), Quaternion.Euler(90, 0, 0));
+            GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
             newBullet.GetComponent<Bullet>().damage = 1;
             newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed;
         }
