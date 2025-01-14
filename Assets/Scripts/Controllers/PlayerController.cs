@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour
             }
             GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
             newBullet.GetComponent<Bullet>().damage = 1;
+            newBullet.GetComponent<Bullet>().isPlayerBullet = true;
             newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed;
         }
 

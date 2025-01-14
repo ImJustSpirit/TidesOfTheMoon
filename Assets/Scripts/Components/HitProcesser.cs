@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class HitEffect : MonoBehaviour
+public class HitProcesser : MonoBehaviour
 {
     private new Renderer renderer;
     private Color originalColor;
@@ -12,10 +12,11 @@ public class HitEffect : MonoBehaviour
         originalColor = renderer.material.color;
     }
 
-    public void OnHit()
+    public void ProcessHit(GameObject hitter)
     {
-        /*StopAllCoroutines(); // Stop any existing color transition
-        StartCoroutine(HitColorCoroutine());*/
+        StopAllCoroutines(); // Stop any existing color transition
+        StartCoroutine(HitColorCoroutine());
+        if (!hitter.GetComponent<Bullet>().isPenetrative) { Destroy(hitter); }
     }
 
     private IEnumerator HitColorCoroutine()
@@ -33,11 +34,5 @@ public class HitEffect : MonoBehaviour
             yield return null;
         }
         renderer.material.color = originalColor;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        StopAllCoroutines(); // Stop any existing color transition
-        StartCoroutine(HitColorCoroutine());
     }
 }
