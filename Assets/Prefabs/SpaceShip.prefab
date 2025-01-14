@@ -122,6 +122,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fa4dc153d54a4584eb83507ff4448c1f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8ee27db3c2b727042b8c7e591f5d89d9, type: 2}
+    - target: {fileID: -7511558181221131132, guid: fa4dc153d54a4584eb83507ff4448c1f, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f9dce61bc295c724ab8b13ffab2d262b, type: 2}
+    - target: {fileID: -7511558181221131132, guid: fa4dc153d54a4584eb83507ff4448c1f, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 783284fe4ea5b1b4896db917f891e604, type: 2}
+    - target: {fileID: -7511558181221131132, guid: fa4dc153d54a4584eb83507ff4448c1f, type: 3}
+      propertyPath: 'm_Materials.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bedd98107fc6de3428c5ed671b27274f, type: 2}
     - target: {fileID: 919132149155446097, guid: fa4dc153d54a4584eb83507ff4448c1f, type: 3}
       propertyPath: m_Name
       value: SpaceShip
@@ -163,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  shipRotateSpeed: 250
+  shipRotateSpeed: 450
   playerBullet: {fileID: 5338106171423119865, guid: cfe25fed7798af141bd7e2fbf4986ce8, type: 3}
   shootCooldown: 0.1
   damage: 1
