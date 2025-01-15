@@ -4,17 +4,22 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public int speed = 10;
-    private float shipRotationX = 0;
-    private float shipRotationZ = 0;
-    public float shipRotateSpeed = 450;
+    public float speed = 10f;
+    private float shipRotationX = 0f;
+    private float shipRotationZ = 0f;
+    public float shipRotateSpeed = 450f;
+    public float RollCooldown = 0.5f;
+    private float leftRollTimer;
+    private float rightRollTimer;
+    public float rollBoost = 2f;
+
 
     // Bullet Variables
     public GameObject playerBullet;
     public float shootCooldown = 0.1f;
     private float shootTimer;
-    public float damage = 1;
-    public float bulletSpeed = 30;
+    public float damage = 1f;
+    public float bulletSpeed = 30f;
     private bool shootSide = false;
     private Vector3 bulletOffset;
     public GameObject LeftMarker;
@@ -56,7 +61,6 @@ public class PlayerController : MonoBehaviour
 
             //Lean
             shipRotationZ -= shipRotateSpeed * Time.deltaTime;
-            if (shipRotationZ < -30) { shipRotationZ = -30; }
         }
         if (Input.GetKey(KeyCode.A) && transform.position.x > -4)
         {
@@ -66,15 +70,44 @@ public class PlayerController : MonoBehaviour
 
             //Lean
             shipRotationZ += shipRotateSpeed * Time.deltaTime;
-            if (shipRotationZ > 30) { shipRotationZ = 30; }
         }
 
+        //Roll
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            if (leftRollTimer < RollCooldown) 
+            {
+                Debug.Log("Left Roll");
+                speed = speed * rollBoost;
+                shipRotationZ += -360;
+                leftRollTimer = 100;
+            }
+            else { leftRollTimer = 0; }
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            if (rightRollTimer < RollCooldown)
+            {
+                Debug.Log("Right Roll");
+                transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+                speed = speed * rollBoost;
+                shipRotationZ += 360;
+                rightRollTimer = 100;
+            }
+            else { rightRollTimer = 0; }
+        }
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) { speed = 10; }
+
         transform.rotation = Quaternion.Euler(new Vector3(shipRotationX, 0, shipRotationZ));
+        leftRollTimer += 1 * Time.deltaTime;
+        rightRollTimer += 1 * Time.deltaTime;
 
         // Auto Zero Rotation
         if (shipRotationX < 0) { shipRotationX += (shipRotateSpeed / 2) * Time.deltaTime; }
         else if (shipRotationX > 0) { shipRotationX -= (shipRotateSpeed / 2) * Time.deltaTime; }
-        if (shipRotationZ < 0) { shipRotationZ += (shipRotateSpeed / 2) * Time.deltaTime; }
+        if (shipRotationZ < -30) { shipRotationZ += (shipRotateSpeed * 2) * Time.deltaTime; }
+        else if (shipRotationZ < 0) { shipRotationZ += (shipRotateSpeed / 2) * Time.deltaTime; }
+        if (shipRotationZ > 30) { shipRotationZ -= (shipRotateSpeed * 2) * Time.deltaTime; }
         else if (shipRotationZ > 0) { shipRotationZ -= (shipRotateSpeed / 2) * Time.deltaTime; }
 
         // Rotation Snap, only snaps an axis when related inputs are off
@@ -92,7 +125,7 @@ public class PlayerController : MonoBehaviour
             shootTimer += Time.deltaTime;
         }
 
-        // Shootning
+        // Shooting
         if (Input.GetKey(KeyCode.Space) && shootTimer>=shootCooldown)
         {
             shootTimer = 0;

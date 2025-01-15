@@ -799,6 +799,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpaceShip
       objectReference: {fileID: 0}
+    - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
+      propertyPath: rollBoost
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
+      propertyPath: RollCooldown
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
