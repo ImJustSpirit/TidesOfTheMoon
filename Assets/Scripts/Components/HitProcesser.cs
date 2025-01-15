@@ -12,11 +12,10 @@ public class HitProcesser : MonoBehaviour
         originalColor = renderer.material.color;
     }
 
-    public void ProcessHit(GameObject hitter)
+    public void ProcessHit()
     {
         StopAllCoroutines(); // Stop any existing color transition
         StartCoroutine(HitColorCoroutine());
-        if (!hitter.GetComponent<Bullet>().isPenetrative) { Destroy(hitter); }
     }
 
     private IEnumerator HitColorCoroutine()

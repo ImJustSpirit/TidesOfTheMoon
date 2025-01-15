@@ -16,4 +16,14 @@ public class Bullet : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if ((isPlayerBullet && other.tag == "Enemy") || (!isPlayerBullet && other.tag == "Player"))
+        {
+            other.GetComponent<Health>().TakeDamage(damage);
+
+            if (!isPenetrative) { Destroy(gameObject); }
+        }
+    }
 }

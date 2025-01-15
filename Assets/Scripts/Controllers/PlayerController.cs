@@ -111,10 +111,5 @@ public class PlayerController : MonoBehaviour
             newBullet.GetComponent<Bullet>().isPlayerBullet = true;
             newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed;
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
     }
 }
