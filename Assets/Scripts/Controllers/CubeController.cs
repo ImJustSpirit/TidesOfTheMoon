@@ -2,11 +2,17 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-   private void OnTriggerEnter(Collider other)
+    public GameObject cubePrefab;
+
+    public bool Imafraidivediedbutitsokayiwasheavilypregnantsoimnowspawningtheguyokhereheisgoodluckmandontletmedownwewillwinagainsttheseangryrobotships = false;
+
+    private void Update()
     {
-        if (other.gameObject.tag == "Bullet")
+        transform.localScale = new Vector3(GetComponent<Health>().health / 5f, GetComponent<Health>().health / 5f, GetComponent<Health>().health / 5f);
+
+        if(GetComponent<Health>().health < 100)
         {
-            GetComponent<HitProcesser>().ProcessHit(other.gameObject);
+            GetComponent<Health>().health += Time.deltaTime * 4;
         }
     }
 }
