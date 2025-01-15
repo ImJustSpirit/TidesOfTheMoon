@@ -12,7 +12,7 @@ public class CubeController : MonoBehaviour
 
         if(GetComponent<Health>().health < 100)
         {
-            GetComponent<Health>().health += Time.deltaTime * 4;
+            GetComponent<Health>().health += Time.deltaTime * 2;
         }
     }
 }
