@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 10f;
     private float shipRotationX = 0f;
+    private float shipRotationY = 0f;
     private float shipRotationZ = 0f;
     public float shipRotateSpeed = 450f;
     public float RollCooldown = 0.5f;
@@ -98,7 +99,10 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) { speed = 10; }
 
-        transform.rotation = Quaternion.Euler(new Vector3(shipRotationX, 0, shipRotationZ));
+        //Rotate
+        shipRotationY = (transform.position.x * 30) / 4;
+
+        transform.rotation = Quaternion.Euler(new Vector3(shipRotationX, shipRotationY, shipRotationZ));
         leftRollTimer += 1 * Time.deltaTime;
         rightRollTimer += 1 * Time.deltaTime;
 
@@ -139,10 +143,10 @@ public class PlayerController : MonoBehaviour
                 bulletOffset = LeftMarker.transform.position;
                 shootSide = true;
             }
-            GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
+            GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, shipRotationY, 0));
             newBullet.GetComponent<Bullet>().damage = 1;
             newBullet.GetComponent<Bullet>().isPlayerBullet = true;
-            newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed;
+            newBullet.GetComponent<Rigidbody>().linearVelocity = new Vector3(transform.forward.x * bulletSpeed, 0, transform.forward.z * bulletSpeed);
         }
     }
 }
