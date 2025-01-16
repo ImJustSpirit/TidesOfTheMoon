@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -8,6 +9,7 @@ public class CameraController : MonoBehaviour
 
     // Named this way so you don't mix up positionConstraint and PositionConstraint
     public float transitionSpeed = 10;
+    public Transform player;
     public PositionConstraint moveConstraint;
     public LookAtConstraint watchConstraint;
     private float cameraDistance;
@@ -61,9 +63,16 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         targetMarker = originMarker;
+        if (player == null) Debug.LogError("Player reference is not set in CameraController.");
         cam = Camera.main;
     }
-    void Update()
+    
+    /*
+     Oliver - I disabled this because the ship looks fuzzy the whole time 
+     because I think the cam is lerping to the player all the time since the player is always moving? 
+     Feel free to fix and switch back to this
+     
+     void Update()
     {
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetOrthSize, transitionSpeed * Time.deltaTime);
         if ((-0.2f < targetOrthSize - cam.orthographicSize) && (targetOrthSize - cam.orthographicSize < 0.2f)) { cam.orthographicSize = targetOrthSize; }
@@ -84,5 +93,14 @@ public class CameraController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H)) { cameraTopDownH(); } // Top Down Horizontal
         if (Input.GetKeyDown(KeyCode.U)) { cameraOrigin(); } // Default Cam
         if (Input.GetKeyDown(KeyCode.Y)) { cameraSideScroller(); } // Side Scroller
+    }*/
+
+    private void FixedUpdate()
+    {
+        if (player != null)
+        {
+            Vector3 targetPosition = new Vector3(cam.transform.position.x, 0, player.position.z + 15); // Maintain offset
+            cam.transform.position = Vector3.Lerp(cam.transform.position, targetPosition, transitionSpeed * Time.deltaTime);
+        }
     }
 }

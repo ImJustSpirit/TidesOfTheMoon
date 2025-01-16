@@ -813,6 +813,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 8488029998836263750}
+    - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
       propertyPath: enemiesPerSpawn
       value: 5
       objectReference: {fileID: 0}

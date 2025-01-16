@@ -1,12 +1,14 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     public bool shootAtCusor = false;
 
-    public float speed = 10f;
+    public float controlledSpeed = 10f;
+    public float forwardSpeed = 20f;
     private float shipRotationX = 0f;
     private float shipRotationZ = 0f;
     public float shipRotateSpeed = 450f;
@@ -36,6 +38,8 @@ public class PlayerController : MonoBehaviour
         //Application.targetFrameRate = 180;
         
         cam = Camera.main;
+
+        GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
     }
 
     void Update()
@@ -44,7 +48,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.W) && transform.position.y < 2)
         {
             // Movement
-            transform.position += new Vector3(0, speed * Time.deltaTime, 0);
+            transform.position += new Vector3(0, controlledSpeed * Time.deltaTime, 0);
             if (transform.position.y > 2) { transform.position = new Vector3(transform.position.x, 2, transform.position.z); }
 
             //Lean
@@ -54,7 +58,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.S) && transform.position.y > -2)
         {
             // Movement
-            transform.position -= new Vector3(0, speed * Time.deltaTime, 0);
+            transform.position -= new Vector3(0, controlledSpeed * Time.deltaTime, 0);
             if (transform.position.y < -2) { transform.position = new Vector3(transform.position.x, -2, transform.position.z); }
 
             //Lean
@@ -64,7 +68,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D) && transform.position.x < 4)
         {
             // Movement
-            transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(controlledSpeed * Time.deltaTime, 0, 0);
             if (transform.position.x > 4) { transform.position = new Vector3(4, transform.position.y, transform.position.z); }
 
             //Lean
@@ -73,7 +77,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.A) && transform.position.x > -4)
         {
             // Movement
-            transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
+            transform.position -= new Vector3(controlledSpeed * Time.deltaTime, 0, 0);
             if (transform.position.x < -4) { transform.position = new Vector3(-4, transform.position.y, transform.position.z); }
 
             //Lean
@@ -86,7 +90,7 @@ public class PlayerController : MonoBehaviour
             if (leftRollTimer < RollCooldown) 
             {
                 Debug.Log("Left Roll");
-                speed = speed * rollBoost;
+                controlledSpeed = controlledSpeed * rollBoost;
                 shipRotationZ += -360;
                 leftRollTimer = 100;
             }
@@ -97,14 +101,14 @@ public class PlayerController : MonoBehaviour
             if (rightRollTimer < RollCooldown)
             {
                 Debug.Log("Right Roll");
-                transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
-                speed = speed * rollBoost;
+                transform.position += new Vector3(controlledSpeed * Time.deltaTime, 0, 0);
+                controlledSpeed = controlledSpeed * rollBoost;
                 shipRotationZ += 360;
                 rightRollTimer = 100;
             }
             else { rightRollTimer = 0; }
         }
-        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) { speed = 10; }
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) { controlledSpeed = 10; }
 
         transform.rotation = Quaternion.Euler(new Vector3(shipRotationX, 0, shipRotationZ));
         leftRollTimer += 1 * Time.deltaTime;
@@ -134,12 +138,12 @@ public class PlayerController : MonoBehaviour
         }
 
         // Shooting
-        if (Input.GetKey(KeyCode.Space) && shootTimer >= shootCooldown)
+        /*if (Input.GetKey(KeyCode.Space) && shootTimer >= shootCooldown)
         {
             Shoot(false);
-        }
+        }*/
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && shootTimer >= shootCooldown)
         {
             Shoot(true);
         }

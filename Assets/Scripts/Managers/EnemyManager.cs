@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public Transform player;
+    
     public GameObject melee1_EnemyPrefab;
     public float initialSpawnRate = 2.0f; // Initial spawn interval in seconds
     public int enemiesPerSpawn = 1;
@@ -35,19 +37,11 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < enemiesPerSpawn; i++)
         {
             // Spawn the enemy prefab at a random position
-            Vector3 spawnPosition = new Vector3(Random.Range(-40, 40), Random.Range(-20, 20), 150);
+            Vector3 spawnPosition = new Vector3(Random.Range(-40, 40), Random.Range(-20, 20), player.position.z + 150);
             GameObject enemy = Instantiate(melee1_EnemyPrefab, spawnPosition, Quaternion.identity);
 
             // Set the enemy's linear velocity to Vector3.back * speed (read from its Enemy component)
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
-            if (enemyComponent != null)
-            {
-                Rigidbody rb = enemy.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.linearVelocity = Vector3.back * enemyComponent.speed;
-                }
-            }
         }
     }
 
