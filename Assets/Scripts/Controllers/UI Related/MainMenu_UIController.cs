@@ -4,6 +4,7 @@ using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu_UIController : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class MainMenu_UIController : MonoBehaviour
     public GameObject MainMenu;
     public GameObject LevelSelectionMenu;
     public GameObject OptionsMenu;
+    
+    public Slider musicVolumeSlider;
+    public Slider sfxVolumeSlider;
 
     private void Start()
     {
@@ -26,6 +30,8 @@ public class MainMenu_UIController : MonoBehaviour
     public void OptionsButtonClicked()
     {
         SwitchMenuState(MenuState.OptionsMenu);
+        musicVolumeSlider.value = AudioManager.Instance.musicSource.volume;
+        sfxVolumeSlider.value = AudioManager.Instance.sfxSource.volume;
     }
     public void OnQuitButtonClicked()
     {
@@ -42,6 +48,15 @@ public class MainMenu_UIController : MonoBehaviour
     public void OnLevelSelectionButtonClicked(string Level)
     {
         SceneManager.LoadScene(Level);
+    }
+    
+    public void OnMusicVolumeSliderChanged()
+    {
+        AudioManager.Instance.SetMusicVolume(musicVolumeSlider.value);
+    }
+    public void OnSFXVolumeSliderChanged()
+    {
+        AudioManager.Instance.SetSFXVolume(sfxVolumeSlider.value);
     }
 
     private void SwitchMenuState(MenuState newState)

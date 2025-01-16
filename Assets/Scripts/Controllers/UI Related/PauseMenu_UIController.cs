@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu_UIController : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class PauseMenu_UIController : MonoBehaviour
 
     public GameObject PauseMenu;
     public GameObject OptionsMenu;
+    
+    public Slider musicVolumeSlider;
+    public Slider sfxVolumeSlider;
 
     private void Start()
     {
@@ -30,6 +34,8 @@ public class PauseMenu_UIController : MonoBehaviour
     public void OptionsButtonClicked()
     {
         SwitchMenuState(MenuState.OptionsMenu);
+        musicVolumeSlider.value = AudioManager.Instance.musicSource.volume;
+        sfxVolumeSlider.value = AudioManager.Instance.sfxSource.volume;
     }
     public void OnQuitToMainMenuButtonClicked()
     {
@@ -38,6 +44,15 @@ public class PauseMenu_UIController : MonoBehaviour
     public void OnBackButtonClicked()
     {
         SwitchMenuState(MenuState.PauseMenu);
+    }
+
+    public void OnMusicVolumeSliderChanged()
+    {
+        AudioManager.Instance.SetMusicVolume(musicVolumeSlider.value);
+    }
+    public void OnSFXVolumeSliderChanged()
+    {
+        AudioManager.Instance.SetSFXVolume(sfxVolumeSlider.value);
     }
 
     private void SwitchMenuState(MenuState newState)
