@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 10f;
     private float shipRotationX = 0f;
-    private float shipRotationY = 0f;
     private float shipRotationZ = 0f;
     public float shipRotateSpeed = 450f;
     public float RollCooldown = 0.5f;
@@ -14,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private float rightRollTimer;
     public float rollBoost = 2f;
 
+    public GameObject cursor;
 
     // Bullet Variables
     public GameObject playerBullet;
@@ -99,10 +99,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) { speed = 10; }
 
-        //Rotate
-        shipRotationY = (transform.position.x * 30) / 4;
-
-        transform.rotation = Quaternion.Euler(new Vector3(shipRotationX, shipRotationY, shipRotationZ));
+        transform.rotation = Quaternion.Euler(new Vector3(shipRotationX, 0, shipRotationZ));
         leftRollTimer += 1 * Time.deltaTime;
         rightRollTimer += 1 * Time.deltaTime;
 
@@ -115,7 +112,7 @@ public class PlayerController : MonoBehaviour
         else if (shipRotationZ > 0) { shipRotationZ -= (shipRotateSpeed / 2) * Time.deltaTime; }
 
         // Rotation Snap, only snaps an axis when related inputs are off
-        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        // if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             if ((shipRotationX < 0.5f) && (shipRotationX > -0.5f)) { shipRotationX = 0; }
         }
@@ -130,7 +127,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Shooting
-        if (Input.GetKey(KeyCode.Space) && shootTimer>=shootCooldown)
+        if (Input.GetKey(KeyCode.Space) && shootTimer >= shootCooldown)
         {
             shootTimer = 0;
             if (shootSide)
@@ -143,10 +140,10 @@ public class PlayerController : MonoBehaviour
                 bulletOffset = LeftMarker.transform.position;
                 shootSide = true;
             }
-            GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, shipRotationY, 0));
+            GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
             newBullet.GetComponent<Bullet>().damage = 1;
             newBullet.GetComponent<Bullet>().isPlayerBullet = true;
-            newBullet.GetComponent<Rigidbody>().linearVelocity = new Vector3(transform.forward.x * bulletSpeed, 0, transform.forward.z * bulletSpeed);
+            newBullet.GetComponent<Rigidbody>().linearVelocity = cursor.transform.position - transform.position;
         }
     }
 }
