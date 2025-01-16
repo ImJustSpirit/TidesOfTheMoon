@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool shootAtCusor = false;
+
     public float speed = 10f;
     private float shipRotationX = 0f;
     private float shipRotationZ = 0f;
@@ -143,7 +145,8 @@ public class PlayerController : MonoBehaviour
             GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
             newBullet.GetComponent<Bullet>().damage = 1;
             newBullet.GetComponent<Bullet>().isPlayerBullet = true;
-            newBullet.GetComponent<Rigidbody>().linearVelocity = cursor.transform.position - transform.position;
+            if (shootAtCusor) { newBullet.GetComponent<Rigidbody>().linearVelocity = cursor.transform.position - transform.position; }
+            else { newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed; }
         }
     }
 }
