@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2439753509974299194}
   serializedVersion: 2
   m_LocalRotation: {x: -4.316693e-15, y: -1, z: 0.000000021855694, w: 0.00000019470718}
-  m_LocalPosition: {x: 0.0232, y: -0.0008, z: 0.0215}
+  m_LocalPosition: {x: 0.0232, y: -0.0008, z: 0.0616}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 9065425320213948645}
   serializedVersion: 2
   m_LocalRotation: {x: -4.316693e-15, y: -1, z: 0.000000021855694, w: 0.00000019470718}
-  m_LocalPosition: {x: -0.0232, y: -0.0008, z: 0.0215}
+  m_LocalPosition: {x: -0.0232, y: -0.0008, z: 0.0616}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -180,12 +180,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   shipRotateSpeed: 450
-  RollCooldown: 0.5
+  RollCooldown: 0.00075
   rollBoost: 2
   playerBullet: {fileID: 5338106171423119865, guid: cfe25fed7798af141bd7e2fbf4986ce8, type: 3}
-  shootCooldown: 0.1
+  shootCooldown: 0.05
   damage: 1
-  bulletSpeed: 30
+  bulletSpeed: 60
   LeftMarker: {fileID: 9065425320213948645}
   RightMarker: {fileID: 2439753509974299194}
 --- !u!114 &2252725030198214980
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ceca1af4fb956248be046ca93f5649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 50
 --- !u!65 &2297522767176792145
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 50}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d61861ec517e7409c29262531ccac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpinStrength: 1
 --- !u!114 &5648738886786738789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,8 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc6684d361bd5d4eb9d01e349a862f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 8027528293972934988}
-  Imafraidivediedbutitsokayiwasheavilypregnantsoimnowspawningtheguyokhereheisgoodluckmandontletmedownwewillwinagainsttheseangryrobotships: 0
 --- !u!114 &5590884168845754134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,4 +176,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ceca1af4fb956248be046ca93f5649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 1000
