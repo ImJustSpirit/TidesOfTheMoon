@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < enemiesPerSpawn; i++)
         {
             // Spawn the enemy prefab at a random position
-            Vector3 spawnPosition = new Vector3(Random.Range(-4, 4), Random.Range(-2, 2), 100);
+            Vector3 spawnPosition = new Vector3(Random.Range(-40, 40), Random.Range(-20, 20), 150);
             GameObject enemy = Instantiate(melee1_EnemyPrefab, spawnPosition, Quaternion.identity);
 
             // Set the enemy's linear velocity to Vector3.back * speed (read from its Enemy component)

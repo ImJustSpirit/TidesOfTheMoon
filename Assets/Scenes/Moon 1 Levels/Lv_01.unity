@@ -212,6 +212,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: bulletSpeed
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: shootCooldown
+      value: 0.3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 505252185560118324, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}

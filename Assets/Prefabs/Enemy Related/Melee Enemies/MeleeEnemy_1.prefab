@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7247669472334046517}
   - component: {fileID: 6551924251971929356}
   - component: {fileID: 107359293724551138}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MeleeEnemy_1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  speed: 100
+  speed: 20
 --- !u!114 &6551924251971929356
 MonoBehaviour:
   m_ObjectHideFlags: 0

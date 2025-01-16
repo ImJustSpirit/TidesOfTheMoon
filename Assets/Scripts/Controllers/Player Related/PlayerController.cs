@@ -27,10 +27,15 @@ public class PlayerController : MonoBehaviour
     private Vector3 bulletOffset;
     public GameObject LeftMarker;
     public GameObject RightMarker;
+    
+    private Camera cam;
+    [SerializeField] private LayerMask layerMask;
 
     private void Start()
     {
         //Application.targetFrameRate = 180;
+        
+        cam = Camera.main;
     }
 
     void Update()
@@ -131,22 +136,70 @@ public class PlayerController : MonoBehaviour
         // Shooting
         if (Input.GetKey(KeyCode.Space) && shootTimer >= shootCooldown)
         {
-            shootTimer = 0;
-            if (shootSide)
-            {
-                bulletOffset = RightMarker.transform.position;
-                shootSide = false;
-            }
-            else
-            {
-                bulletOffset = LeftMarker.transform.position;
-                shootSide = true;
-            }
-            GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
-            newBullet.GetComponent<Bullet>().damage = 1;
-            newBullet.GetComponent<Bullet>().isPlayerBullet = true;
-            if (shootAtCusor) { newBullet.GetComponent<Rigidbody>().linearVelocity = cursor.transform.position - transform.position; }
-            else { newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed; }
+            Shoot(false);
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            Shoot(true);
+        }
+    }
+
+    void Shoot(bool atCursor)
+    {
+        shootTimer = 0;
+        if (shootSide)
+        {
+            bulletOffset = RightMarker.transform.position;
+            shootSide = false;
+        }
+        else
+        {
+            bulletOffset = LeftMarker.transform.position;
+            shootSide = true;
+        }
+
+        GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
+        newBullet.GetComponent<Bullet>().damage = 1;
+        newBullet.GetComponent<Bullet>().isPlayerBullet = true;
+
+        if (atCursor)
+        {
+            ShootAtCursor(newBullet);
+        }
+        else
+        {
+            newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed;
+        }
+    }
+    void ShootAtCursor(GameObject bullet)
+    {
+        //Gets the position of the mouse in the world
+        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
+    
+        // Calculate the direction from the ship to the mouse position
+        Vector3 direction = (mouseWorldPosition - cam.transform.position).normalized;
+
+        //Fires a ray to the intended hit point from the camera
+        Physics.Raycast(cam.transform.position, direction, out RaycastHit hit, Mathf.Infinity, layerMask);
+        
+        // Perform a raycast to check if it hits something
+        if (hit.collider is not null)
+        {
+            // Point towards the hit point
+            bullet.transform.LookAt(hit.point);
+            bullet.transform.rotation = Quaternion.Euler(bullet.transform.rotation.eulerAngles + new Vector3(90, 0, 0));
+
+            // Set the velocity to shoot towards the hit point
+            bullet.GetComponent<Rigidbody>().linearVelocity = (hit.point - bullet.transform.position).normalized * bulletSpeed;
+        }
+        else
+        {
+            // In case no hit occurs, set a default direction for the bullet
+            Vector3 fallbackPoint = cam.transform.position + (direction * 1000); // Arbitrary far point
+            bullet.transform.LookAt(fallbackPoint);
+            bullet.transform.rotation = Quaternion.Euler(bullet.transform.rotation.eulerAngles + new Vector3(90, 0, 0));
+            bullet.GetComponent<Rigidbody>().linearVelocity = direction * bulletSpeed;
         }
     }
 }
