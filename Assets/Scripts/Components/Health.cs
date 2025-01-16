@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class Health : MonoBehaviour
         health -= bulletDamage;
         if (health <= 0)
         {
+            if (gameObject.tag == "Player")
+            {
+                SceneManager.LoadScene("Lv_01");
+            }
+            
             // Temporary but this should be an event for the main class controller to receive and die
             Destroy(gameObject);
         }
