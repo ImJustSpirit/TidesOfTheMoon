@@ -208,6 +208,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: RollCooldown
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: shootCooldown
       value: 0.2
       objectReference: {fileID: 0}

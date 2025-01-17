@@ -5540,6 +5540,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneMusicManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6708960955038859469, guid: 28251ba0ad55304439bd61c1523ce2f7, type: 3}
+      propertyPath: defaultMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 820d3eac51463b2458fb292595a23eb4, type: 3}
     - target: {fileID: 8951628501472624384, guid: 28251ba0ad55304439bd61c1523ce2f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.362177

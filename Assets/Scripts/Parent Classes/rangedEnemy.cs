@@ -48,7 +48,6 @@ public class rangedEnemy : Enemy
         if (rb != null)
         {
             rb.linearVelocity = direction * bulletSpeed;
-            Debug.Log(rb.linearVelocity);
         }
     }
 }

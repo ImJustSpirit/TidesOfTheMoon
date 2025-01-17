@@ -993,9 +993,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8488029998836263750}
     - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 5338106171423119865, guid: cfe25fed7798af141bd7e2fbf4986ce8, type: 3}
+    - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
       propertyPath: enemiesPerSpawn
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 8488029998836263750}
     - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
       propertyPath: initialSpawnRate
       value: 4
@@ -1004,6 +1012,10 @@ PrefabInstance:
       propertyPath: melee1_EnemyPrefab
       value: 
       objectReference: {fileID: 5128367669093579484, guid: 398aa699a4d3cb749ae841356e206426, type: 3}
+    - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
+      propertyPath: melee2_EnemyPrefab
+      value: 
+      objectReference: {fileID: 8190087876005763917, guid: 3b2d8978f3053014b963da8b8b3a7265, type: 3}
     - target: {fileID: 9148120170821856964, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
       propertyPath: m_Name
       value: EnemyManager

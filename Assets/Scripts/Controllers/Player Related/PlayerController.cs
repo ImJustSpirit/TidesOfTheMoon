@@ -14,10 +14,13 @@ public class PlayerController : MonoBehaviour
     private float shipRotationX = 0f;
     private float shipRotationZ = 0f;
     public float shipRotateSpeed = 450f;
+
+    // Rolling
     public float RollCooldown = 0.5f;
     private float leftRollTimer;
     private float rightRollTimer;
     public float rollBoost = 2f;
+    public bool hasRolled = false;
 
     public GameObject cursor;
     public GameObject hitPointObject;
@@ -100,8 +103,13 @@ public class PlayerController : MonoBehaviour
                 controlledSpeed = controlledSpeed * rollBoost;
                 shipRotationZ += -360;
                 leftRollTimer = 100;
+                hasRolled = true;
             }
-            else { leftRollTimer = 0; }
+            else 
+            {
+                leftRollTimer = 0;
+                hasRolled = false;
+            }
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -112,8 +120,13 @@ public class PlayerController : MonoBehaviour
                 controlledSpeed = controlledSpeed * rollBoost;
                 shipRotationZ += 360;
                 rightRollTimer = 100;
+                hasRolled = true;
             }
-            else { rightRollTimer = 0; }
+            else
+            {
+                rightRollTimer = 0;
+                hasRolled = false;
+            }
         }
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) { controlledSpeed = 10; }
 

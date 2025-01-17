@@ -26,6 +26,7 @@ public class EnemySpawner : MonoBehaviour
     {
         currentSpawnRate = initialSpawnRate;
         InvokeRepeating(nameof(SpawnRangedEnemies), 0, currentSpawnRate);
+        InvokeRepeating(nameof(SpawnMeleeEnemies), 0, currentSpawnRate);
     }
 
     void Update()
@@ -60,15 +61,31 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    void SpawnMeleeEnemies()
+    {
+        for (int i = 0; i < enemiesPerSpawn; i++)
+        {
+            // Spawn the enemy prefab at a random position
+            Vector3 spawnPosition = new Vector3(Random.Range(-40, 40), Random.Range(-20, 20), playerTransform.position.z + 50);
+            meleeEnemy newMeleeEnemyClass = Instantiate(melee2_EnemyPrefab, spawnPosition, Quaternion.identity).GetComponent<meleeEnemy>();
+
+            // Assigning Enemy variables
+            newMeleeEnemyClass.collisionDamage = 5;
+            newMeleeEnemyClass.playerTransform = playerTransform;
+        }
+    }
+
     void UpdateSpawnRate()
     {
         // Cancel the current repeating invocation
         CancelInvoke(nameof(SpawnRangedEnemies));
+        CancelInvoke(nameof(SpawnMeleeEnemies));
 
         // Reduce the spawn interval by the multiplier (i.e., increase spawn rate)
         currentSpawnRate *= spawnRateMultiplier;
 
         // Restart the invocation with the updated spawn interval
         InvokeRepeating(nameof(SpawnRangedEnemies), 0, currentSpawnRate);
+        InvokeRepeating(nameof(SpawnMeleeEnemies), 0, currentSpawnRate);
     }
 }

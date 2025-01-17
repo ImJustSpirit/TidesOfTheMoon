@@ -1,10 +1,37 @@
+using System;
 using UnityEngine;
 
 public class meleeEnemy : Enemy
 {
-    // Oliver - if I don't get around to this I was going to
-    // make the enemy either spawn on the same XY as the player,
-    // or have the enemy fly towards the player (but it can't move or it breaks bullet trajectory stuff
-    
-    // Idrc though but that's the ideas I had for this class, do what you want
+    public bool canLatch = false;
+    public float movementSpeed = 1f;
+
+    //Latching
+    public bool latched = false;
+    private bool check1 = false;
+    private bool check2 = false;
+    private bool check3 = false;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if ((other.gameObject.layer == 9) && (canLatch))
+        { 
+            latched = true;
+            gameObject.GetComponent<SphereCollider>().enabled = false;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!latched) { transform.position = Vector3.Lerp(transform.position, playerTransform.position, movementSpeed * Time.deltaTime); }
+        else
+        { 
+            transform.position = playerTransform.position;
+            if (playerTransform.GetComponent<PlayerController>().hasRolled == false) { check1 = true; }
+            if ((playerTransform.GetComponent<PlayerController>().hasRolled == true) && check1) { check2 = true; }
+            if ((playerTransform.GetComponent<PlayerController>().hasRolled == false) && check2) { check3 = true; }
+            if ((playerTransform.GetComponent<PlayerController>().hasRolled == true) && check3) { Destroy(gameObject); }
+        }
+    }
 }
