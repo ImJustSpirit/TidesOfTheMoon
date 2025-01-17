@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
     public GameObject playerCrosshair;
     private RawImage XHAIRrawImage;
 
+    public float stillTimer = -5f;
+
     private void Start()
     {
         //Application.targetFrameRate = 180;
@@ -64,6 +66,8 @@ public class PlayerController : MonoBehaviour
             //Lean
             shipRotationX -= shipRotateSpeed * Time.deltaTime;
             if (shipRotationX < -45) { shipRotationX = -45; }
+            
+            if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
         if (Input.GetKey(KeyCode.S) && transform.position.y > -2)
         {
@@ -74,6 +78,8 @@ public class PlayerController : MonoBehaviour
             //Lean
             shipRotationX += shipRotateSpeed * Time.deltaTime;
             if (shipRotationX > 45) { shipRotationX = 45; }
+            
+            if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
         if (Input.GetKey(KeyCode.D) && transform.position.x < 4)
         {
@@ -83,6 +89,8 @@ public class PlayerController : MonoBehaviour
 
             //Lean
             shipRotationZ -= shipRotateSpeed * Time.deltaTime;
+            
+            if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
         if (Input.GetKey(KeyCode.A) && transform.position.x > -4)
         {
@@ -92,6 +100,8 @@ public class PlayerController : MonoBehaviour
 
             //Lean
             shipRotationZ += shipRotateSpeed * Time.deltaTime;
+            
+            if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
 
         //Roll
@@ -143,7 +153,7 @@ public class PlayerController : MonoBehaviour
         else if (shipRotationZ > 0) { shipRotationZ -= (shipRotateSpeed / 2) * Time.deltaTime; }
 
         // Rotation Snap, only snaps an axis when related inputs are off
-        // if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             if ((shipRotationX < 0.5f) && (shipRotationX > -0.5f)) { shipRotationX = 0; }
         }
@@ -151,6 +161,10 @@ public class PlayerController : MonoBehaviour
         {
             if ((shipRotationZ < 0.5f) && (shipRotationZ > -0.5f)) { shipRotationZ = 0; }
         }
+
+        /* if (stillTimer > -15) { stillTimer -= 1f * Time.deltaTime; }
+        cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(cam.transform.position.x, cam.transform.position.y, stillTimer), 3f * Time.deltaTime);
+        cam.fieldOfView =  Mathf.Lerp(cam.fieldOfView, 20 + (4 * (stillTimer + 15f)), 3f * Time.deltaTime); */
         
         if (shootTimer < shootCooldown)
         {
