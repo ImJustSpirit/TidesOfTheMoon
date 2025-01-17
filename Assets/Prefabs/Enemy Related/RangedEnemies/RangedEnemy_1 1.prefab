@@ -107,6 +107,7 @@ MonoBehaviour:
   shootRate: 1
   bulletSpeed: 10
   bulletDamage: 1
+  TargetLocation: {x: 0, y: 0, z: 0}
   bulletPrefab: {fileID: 0}
 --- !u!114 &2513920422933748620
 MonoBehaviour:
@@ -120,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ceca1af4fb956248be046ca93f5649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 16
   deathAudio: {fileID: 6581478367038953852, guid: 6cdbd8cfaf8fa3f48a11d6ee3e2a5c44, type: 3}
 --- !u!54 &7872503858291624040
 Rigidbody:

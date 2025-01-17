@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1175014042607437145, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: field of view
-      value: 90
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2310259338794395045, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -197,11 +197,11 @@ PrefabInstance:
       objectReference: {fileID: 2092760116}
     - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: initialSpawnRate
-      value: 8
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: spawnRateMultiplier
-      value: 0.8
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: spawnRateIncreaseInterval

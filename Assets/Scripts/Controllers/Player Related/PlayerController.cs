@@ -175,6 +175,8 @@ public class PlayerController : MonoBehaviour
         }
 
         GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
+        newBullet.GetComponent<MeshRenderer>().material.color = Color.cyan;
+        newBullet.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.cyan * 5);
         newBullet.GetComponent<Bullet>().damage = 1;
         newBullet.GetComponent<Bullet>().isPlayerBullet = true;
 

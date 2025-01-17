@@ -53,7 +53,7 @@ public class EnemySpawner : MonoBehaviour
 
             // Assigning rangedEnemy variables
             newRangedEnemyClass.shootRate = 1f;
-            newRangedEnemyClass.bulletSpeed = 80f;
+            newRangedEnemyClass.bulletSpeed = 30f;
             newRangedEnemyClass.bulletDamage = 5f;
             newRangedEnemyClass.bulletPrefab = bulletPrefab;
 
