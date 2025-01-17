@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1175014042607437145, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: field of view
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 2310259338794395045, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -167,6 +171,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3717257646095671695, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5
+      objectReference: {fileID: 0}
     - target: {fileID: 5456033689150676657, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_Name
       value: LevelObjectPrefab
@@ -179,6 +187,26 @@ PrefabInstance:
       propertyPath: m_Texture
       value: 
       objectReference: {fileID: 2800000, guid: 196c4e35718e68e4fbd412ffa0a7c26f, type: 3}
+    - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 5338106171423119865, guid: cfe25fed7798af141bd7e2fbf4986ce8, type: 3}
+    - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 2092760116}
+    - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: initialSpawnRate
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: spawnRateMultiplier
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: spawnRateIncreaseInterval
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: shootCooldown
       value: 0.2
@@ -188,6 +216,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+--- !u!4 &2092760116 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8488029998836263750, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+  m_PrefabInstance: {fileID: 866267887}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

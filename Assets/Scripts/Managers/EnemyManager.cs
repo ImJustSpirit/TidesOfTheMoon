@@ -1,11 +1,18 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Transform player;
+    public Transform playerTransform;
     
     public GameObject melee1_EnemyPrefab;
-    public float initialSpawnRate = 2.0f; // Initial spawn interval in seconds
+    public GameObject melee2_EnemyPrefab;
+    public GameObject ranged1_EnemyPrefab;
+    public GameObject ranged2_EnemyPrefab;
+
+    public GameObject bulletPrefab;
+    
+    public float initialSpawnRate = 2.5f; // Initial spawn interval in seconds
     public int enemiesPerSpawn = 1;
     private float currentSpawnRate;
     private float timeSinceLastSpawnRateUpdate = 0.0f;
@@ -37,11 +44,19 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < enemiesPerSpawn; i++)
         {
             // Spawn the enemy prefab at a random position
-            Vector3 spawnPosition = new Vector3(Random.Range(-40, 40), Random.Range(-20, 20), player.position.z + 150);
-            GameObject enemy = Instantiate(melee1_EnemyPrefab, spawnPosition, Quaternion.identity);
+            Vector3 spawnPosition = new Vector3(Random.Range(-40, 40), Random.Range(-20, 20), playerTransform.position.z + 50);
+            rangedEnemy newRangedEnemyClass = Instantiate(ranged1_EnemyPrefab, spawnPosition, Quaternion.identity).GetComponent<rangedEnemy>();
 
-            // Set the enemy's linear velocity to Vector3.back * speed (read from its Enemy component)
-            Enemy enemyComponent = enemy.GetComponent<Enemy>();
+            // Assigning Enemy variables
+            newRangedEnemyClass.collisionDamage = 10;
+            newRangedEnemyClass.playerTransform = playerTransform;
+
+            // Assigning rangedEnemy variables
+            newRangedEnemyClass.shootRate = 1f;
+            newRangedEnemyClass.bulletSpeed = 80f;
+            newRangedEnemyClass.bulletDamage = 5f;
+            newRangedEnemyClass.bulletPrefab = bulletPrefab;
+
         }
     }
 

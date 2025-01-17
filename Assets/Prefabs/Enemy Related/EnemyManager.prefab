@@ -44,7 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49167bec2865d3e49bd34b1508e61707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   melee1_EnemyPrefab: {fileID: 5128367669093579484, guid: 398aa699a4d3cb749ae841356e206426, type: 3}
+  melee2_EnemyPrefab: {fileID: 0}
+  ranged1_EnemyPrefab: {fileID: 9022419925783237285, guid: 5ebd213fd52b00547a1c6bff1dc65abe, type: 3}
+  ranged2_EnemyPrefab: {fileID: 0}
   initialSpawnRate: 3
+  enemiesPerSpawn: 1
   spawnRateIncreaseInterval: 20
   spawnRateMultiplier: 0.5

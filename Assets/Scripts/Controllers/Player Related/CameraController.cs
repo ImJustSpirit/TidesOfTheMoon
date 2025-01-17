@@ -67,10 +67,10 @@ public class CameraController : MonoBehaviour
         cam = Camera.main;
     }
     
-    /*
-     Oliver - I disabled this because the ship looks fuzzy the whole time 
+    
+     /*Oliver - I disabled this because the ship looks fuzzy the whole time 
      because I think the cam is lerping to the player all the time since the player is always moving? 
-     Feel free to fix and switch back to this
+     Feel free to fix and switch back to this*/
      
      void Update()
     {
@@ -93,14 +93,14 @@ public class CameraController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H)) { cameraTopDownH(); } // Top Down Horizontal
         if (Input.GetKeyDown(KeyCode.U)) { cameraOrigin(); } // Default Cam
         if (Input.GetKeyDown(KeyCode.Y)) { cameraSideScroller(); } // Side Scroller
-    }*/
+    }
 
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     {
         if (player != null)
         {
             Vector3 targetPosition = new Vector3(cam.transform.position.x, 0, player.position.z + 15); // Maintain offset
             cam.transform.position = Vector3.Lerp(cam.transform.position, targetPosition, transitionSpeed * Time.deltaTime);
         }
-    }
+    }*/
 }

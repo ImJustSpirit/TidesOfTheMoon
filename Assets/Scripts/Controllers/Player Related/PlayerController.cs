@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public bool shootAtCusor = false;
 
     public float controlledSpeed = 10f;
-    public float forwardSpeed = 20f;
+    public float forwardSpeed = 0f;
     private float shipRotationX = 0f;
     private float shipRotationZ = 0f;
     public float shipRotateSpeed = 450f;
@@ -19,8 +19,8 @@ public class PlayerController : MonoBehaviour
     private float rightRollTimer;
     public float rollBoost = 2f;
 
-public GameObject cursor;
-public GameObject hitPointObject;
+    public GameObject cursor;
+    public GameObject hitPointObject;
 
     // Bullet Variables
     public GameObject playerBullet;
@@ -46,7 +46,7 @@ public GameObject hitPointObject;
 
         XHAIRrawImage = playerCrosshair.GetComponent<RawImage>();
 
-        GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
+        //GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
     }
 
     void Update()

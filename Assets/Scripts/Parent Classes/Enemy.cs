@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float damage;
-    public float speed;
+    public float collisionDamage;
+    public Transform playerTransform;
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            other.GetComponent<Health>()?.TakeDamage(damage);
+            other.GetComponent<Health>()?.TakeDamage(collisionDamage);
         }
     }
 }
