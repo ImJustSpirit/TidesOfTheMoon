@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class PlayerController : MonoBehaviour
     private float rightRollTimer;
     public float rollBoost = 2f;
 
-    public GameObject cursor;
+public GameObject cursor;
+public GameObject hitPointObject;
 
     // Bullet Variables
     public GameObject playerBullet;
@@ -32,12 +34,16 @@ public class PlayerController : MonoBehaviour
     
     private Camera cam;
     [SerializeField] private LayerMask layerMask;
+    public GameObject playerCrosshair;
+    private RawImage XHAIRrawImage;
 
     private void Start()
     {
         //Application.targetFrameRate = 180;
         
         cam = Camera.main;
+
+        XHAIRrawImage = playerCrosshair.GetComponent<RawImage>();
 
         GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
     }
@@ -147,6 +153,8 @@ public class PlayerController : MonoBehaviour
         {
             Shoot(true);
         }
+
+        UpdateCrosshair();
     }
 
     void Shoot(bool atCursor)
@@ -179,8 +187,8 @@ public class PlayerController : MonoBehaviour
     void ShootAtCursor(GameObject bullet)
     {
         //Gets the position of the mouse in the world
-        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
-    
+        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z + 100000));
+        
         // Calculate the direction from the ship to the mouse position
         Vector3 direction = (mouseWorldPosition - cam.transform.position).normalized;
 
@@ -190,12 +198,14 @@ public class PlayerController : MonoBehaviour
         // Perform a raycast to check if it hits something
         if (hit.collider is not null)
         {
+            
+            
             // Point towards the hit point
-            bullet.transform.LookAt(hit.point);
+            bullet.transform.LookAt(hit.collider.transform.position); // Hi it's Oliver I made it aim at the object directly
             bullet.transform.rotation = Quaternion.Euler(bullet.transform.rotation.eulerAngles + new Vector3(90, 0, 0));
 
             // Set the velocity to shoot towards the hit point
-            bullet.GetComponent<Rigidbody>().linearVelocity = (hit.point - bullet.transform.position).normalized * bulletSpeed;
+            bullet.GetComponent<Rigidbody>().linearVelocity = (hit.collider.transform.position - bullet.transform.position).normalized * bulletSpeed;
         }
         else
         {
@@ -204,6 +214,58 @@ public class PlayerController : MonoBehaviour
             bullet.transform.LookAt(fallbackPoint);
             bullet.transform.rotation = Quaternion.Euler(bullet.transform.rotation.eulerAngles + new Vector3(90, 0, 0));
             bullet.GetComponent<Rigidbody>().linearVelocity = direction * bulletSpeed;
+        }
+    }
+
+void UpdateCrosshair()
+    {
+        //Gets the position of the mouse in the world
+        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
+        
+        // Calculate the direction from the ship to the mouse position
+        Vector3 direction = (mouseWorldPosition - cam.transform.position).normalized;
+
+        //Fires a ray to the intended hit point from the camera
+        Physics.Raycast(cam.transform.position, direction, out RaycastHit hit, Mathf.Infinity, layerMask);
+            
+        // Perform a raycast to check if it hits something
+        if (hit.collider != null)
+        {
+            hitPointObject = hit.collider.gameObject;
+            playerCrosshair.transform.position = cam.WorldToScreenPoint(hitPointObject.transform.position);
+            Vector3 minScreenPoint = cam.WorldToScreenPoint(hit.collider.bounds.min); // Bottom-left of the bounds
+            Vector3 maxScreenPoint = cam.WorldToScreenPoint(hit.collider.bounds.max); // Top-right of the bounds
+
+            // Calculate the width and height in screen space
+            float width = maxScreenPoint.x - minScreenPoint.x;
+            float height = maxScreenPoint.y - minScreenPoint.y;
+            
+            float maxLength = Mathf.Max(width, height);
+
+            // Update the RawImage size
+            XHAIRrawImage.rectTransform.sizeDelta = new Vector2(maxLength, maxLength);
+            
+            if (Input.GetMouseButton(0))
+            {
+                XHAIRrawImage.color = Color.red;
+                //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(25, 25);
+                
+                transform.LookAt(hit.collider.transform.position);
+            }
+            else
+            {
+                XHAIRrawImage.color = Color.green;
+                //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(25, 25);
+            }
+        }
+        else
+        {
+            hitPointObject = null;
+            playerCrosshair.transform.position = cam.WorldToScreenPoint(mouseWorldPosition);
+            
+            XHAIRrawImage.color = Color.white;
+            XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
+            //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
         }
     }
 }
