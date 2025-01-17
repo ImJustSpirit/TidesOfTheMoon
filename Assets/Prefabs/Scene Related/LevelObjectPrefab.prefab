@@ -636,7 +636,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -994,11 +994,11 @@ PrefabInstance:
       objectReference: {fileID: 8488029998836263750}
     - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
       propertyPath: enemiesPerSpawn
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
       propertyPath: initialSpawnRate
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6410562526074235763, guid: 3d72264c351f8f64f9f6e5a2ebff06db, type: 3}
       propertyPath: melee1_EnemyPrefab
@@ -1086,6 +1086,10 @@ PrefabInstance:
       propertyPath: playerCrosshair
       value: 
       objectReference: {fileID: 3834165001724169148}
+    - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 5929388119713295849, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
       propertyPath: m_LocalPosition.z
       value: 9
