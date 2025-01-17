@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class Health : MonoBehaviour
 {
     public float health;
+    public GameObject deathAudio;
     
     private new Renderer renderer;
     private Color originalColor;
@@ -25,6 +26,8 @@ public class Health : MonoBehaviour
                 SceneManager.LoadScene("Lv_01");
             }
             
+            Instantiate(deathAudio, transform.position, Quaternion.identity); // Play the death sound effect ( if it exists)
+            
             // Temporary but this should be an event for the main class controller to receive and die
             Destroy(gameObject);
         }
@@ -34,6 +37,7 @@ public class Health : MonoBehaviour
     
     public void ProcessHit()
     {
+        //GetComponent<AudioSource>()?.Play(); // Play the hit sound effect
         StopAllCoroutines(); // Stop any existing color transition
         StartCoroutine(HitColorCoroutine());
     }

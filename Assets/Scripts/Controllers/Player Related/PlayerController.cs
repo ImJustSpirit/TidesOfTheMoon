@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -160,6 +161,8 @@ public GameObject hitPointObject;
     void Shoot(bool atCursor)
     {
         shootTimer = 0;
+        GetComponent<AudioSource>().Play();
+        
         if (shootSide)
         {
             bulletOffset = RightMarker.transform.position;
@@ -240,14 +243,16 @@ void UpdateCrosshair()
             float width = maxScreenPoint.x - minScreenPoint.x;
             float height = maxScreenPoint.y - minScreenPoint.y;
             
-            float maxLength = Mathf.Max(width, height);
+            float maxLength = Mathf.Max(width / 2f, height / 2f);
 
             // Update the RawImage size
-            XHAIRrawImage.rectTransform.sizeDelta = new Vector2(maxLength, maxLength);
+            //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(maxLength, maxLength);
             
             if (Input.GetMouseButton(0))
             {
                 XHAIRrawImage.color = Color.red;
+                XHAIRrawImage.transform.Rotate(0, 0, 360 * Time.deltaTime);
+                XHAIRrawImage.rectTransform.sizeDelta = new Vector2(maxLength / 1.5f, maxLength / 1.5f);
                 //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(25, 25);
                 
                 transform.LookAt(hit.collider.transform.position);
@@ -255,6 +260,8 @@ void UpdateCrosshair()
             else
             {
                 XHAIRrawImage.color = Color.green;
+                XHAIRrawImage.transform.Rotate(0, 0, 90 * Time.deltaTime);
+                XHAIRrawImage.rectTransform.sizeDelta = new Vector2(maxLength, maxLength);
                 //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(25, 25);
             }
         }
@@ -262,8 +269,9 @@ void UpdateCrosshair()
         {
             hitPointObject = null;
             playerCrosshair.transform.position = cam.WorldToScreenPoint(mouseWorldPosition);
-            
-            XHAIRrawImage.color = Color.white;
+
+            XHAIRrawImage.color = Color.clear;
+            XHAIRrawImage.transform.rotation = quaternion.identity;
             XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
             //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
         }

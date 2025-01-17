@@ -22,7 +22,7 @@ public class AudioManager : MonoBehaviour
             Debug.LogError("Audio sources are not assigned in AudioManager.");
         }
 
-        SetMusicVolume(0.5f);
+        SetMusicVolume(0.2f);
         SetSFXVolume(0.5f);
     }
 
