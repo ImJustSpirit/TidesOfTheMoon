@@ -1,6 +1,8 @@
+using System;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -9,11 +11,10 @@ public class PlayerController : MonoBehaviour
 {
     public bool shootAtCusor = false;
 
-    public float controlledSpeed = 10f;
-    public float forwardSpeed = 0f;
-    private float shipRotationX = 0f;
-    private float shipRotationZ = 0f;
+    public float forwardSpeed = 20f;
     public float shipRotateSpeed = 450f;
+    public float viewConstraint = 10f;
+    public float cameraSpeed = 10f;
 
     // Rolling
     public float RollCooldown = 0.5f;
@@ -54,10 +55,11 @@ public class PlayerController : MonoBehaviour
         //GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
     }
 
-    void Update()
+    // OLD MOVEMENT SYSTEM
+    /* void Update()
     {
         // WASD
-        if (Input.GetKey(KeyCode.W) && transform.position.y < 2)
+        if ((Input.GetKey(KeyCode.W) || Gamepad.current.leftStick.up.isPressed) && transform.position.y < 2)
         {
             // Movement
             transform.position += new Vector3(0, controlledSpeed * Time.deltaTime, 0);
@@ -69,7 +71,7 @@ public class PlayerController : MonoBehaviour
             
             if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
-        if (Input.GetKey(KeyCode.S) && transform.position.y > -2)
+        if ((Input.GetKey(KeyCode.S) || Gamepad.current.leftStick.down.isPressed) && transform.position.y > -2)
         {
             // Movement
             transform.position -= new Vector3(0, controlledSpeed * Time.deltaTime, 0);
@@ -81,7 +83,7 @@ public class PlayerController : MonoBehaviour
             
             if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
-        if (Input.GetKey(KeyCode.D) && transform.position.x < 4)
+        if ((Input.GetKey(KeyCode.D) || Gamepad.current.leftStick.right.isPressed) && transform.position.x < 4)
         {
             // Movement
             transform.position += new Vector3(controlledSpeed * Time.deltaTime, 0, 0);
@@ -92,7 +94,7 @@ public class PlayerController : MonoBehaviour
             
             if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
-        if (Input.GetKey(KeyCode.A) && transform.position.x > -4)
+        if ((Input.GetKey(KeyCode.A) || Gamepad.current.leftStick.left.isPressed) && transform.position.x > -4)
         {
             // Movement
             transform.position -= new Vector3(controlledSpeed * Time.deltaTime, 0, 0);
@@ -162,9 +164,10 @@ public class PlayerController : MonoBehaviour
             if ((shipRotationZ < 0.5f) && (shipRotationZ > -0.5f)) { shipRotationZ = 0; }
         }
 
-        /* if (stillTimer > -15) { stillTimer -= 1f * Time.deltaTime; }
-        cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(cam.transform.position.x, cam.transform.position.y, stillTimer), 3f * Time.deltaTime);
-        cam.fieldOfView =  Mathf.Lerp(cam.fieldOfView, 20 + (4 * (stillTimer + 15f)), 3f * Time.deltaTime); */
+        // Zooms camera out when still
+        // if (stillTimer > -15) { stillTimer -= 1f * Time.deltaTime; }
+        // cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(cam.transform.position.x, cam.transform.position.y, stillTimer), 3f * Time.deltaTime);
+        // cam.fieldOfView =  Mathf.Lerp(cam.fieldOfView, 20 + (4 * (stillTimer + 15f)), 3f * Time.deltaTime);
         
         if (shootTimer < shootCooldown)
         {
@@ -172,10 +175,10 @@ public class PlayerController : MonoBehaviour
         }
 
         // Shooting
-        /*if (Input.GetKey(KeyCode.Space) && shootTimer >= shootCooldown)
-        {
-            Shoot(false);
-        }*/
+        // if (Input.GetKey(KeyCode.Space) && shootTimer >= shootCooldown)
+        // {
+        //     Shoot(false);
+        // }
 
         if (Input.GetMouseButton(0) && shootTimer >= shootCooldown)
         {
@@ -183,7 +186,15 @@ public class PlayerController : MonoBehaviour
         }
 
         UpdateCrosshair();
-    }
+    } */
+
+    // NEW MOVEMENT SYSTEM
+    void Update()
+    {
+        transform.rotation = Quaternion.Euler(new Vector3(-90f * Gamepad.current.leftStick.ReadValue().y, 90f * Gamepad.current.leftStick.ReadValue().x, 0));
+        transform.position += transform.forward * forwardSpeed * Time.deltaTime;
+        if (Vector3.Distance(Camera.main.transform.position, transform.position) > viewConstraint){Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(transform.position.x, transform.position.y, transform.position.z-10), cameraSpeed * Time.deltaTime);}
+        else if (Vector3.Distance(Camera.main.transform.position, transform.position) > viewConstraint / 2){ Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, Mathf.Lerp(Camera.main.transform.position.z, transform.position.z, cameraSpeed * Time.deltaTime)); } }
 
     void Shoot(bool atCursor)
     {
