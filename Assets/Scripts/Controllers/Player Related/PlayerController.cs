@@ -13,8 +13,7 @@ public class PlayerController : MonoBehaviour
 
     public float forwardSpeed = 20f;
     public float shipRotateSpeed = 450f;
-    public float viewConstraint = 10f;
-    public float cameraSpeed = 10f;
+    public Vector2 currentShipRotation;
 
     // Rolling
     public float RollCooldown = 0.5f;
@@ -191,11 +190,14 @@ public class PlayerController : MonoBehaviour
     // NEW MOVEMENT SYSTEM
     void Update()
     {
-        transform.rotation = Quaternion.Euler(new Vector3(-90f * Gamepad.current.leftStick.ReadValue().y, 90f * Gamepad.current.leftStick.ReadValue().x, 0));
+        currentShipRotation = Vector2.Lerp(currentShipRotation, new Vector2(Gamepad.current.leftStick.ReadValue().x, Gamepad.current.leftStick.ReadValue().y), shipRotateSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(new Vector3(-90f * currentShipRotation.y, 90f * currentShipRotation.x, 0));
         transform.position += transform.forward * forwardSpeed * Time.deltaTime;
-        if (Vector3.Distance(Camera.main.transform.position, transform.position) > viewConstraint){Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(transform.position.x, transform.position.y, transform.position.z-10), cameraSpeed * Time.deltaTime);}
-        else if (Vector3.Distance(Camera.main.transform.position, transform.position) > viewConstraint / 2){ Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, Mathf.Lerp(Camera.main.transform.position.z, transform.position.z, cameraSpeed * Time.deltaTime)); } }
-
+        if (transform.position.x - cam.transform.position.x < -4.5f) { cam.transform.position = new Vector3(Mathf.Lerp(cam.transform.position.x, transform.position.x - 4.5f, 0.3f * Time.deltaTime), cam.transform.position.y, cam.transform.position.z);}
+        else if (transform.position.x - cam.transform.position.x > 4.5f) { cam.transform.position = new Vector3(Mathf.Lerp(cam.transform.position.x, transform.position.x + 4.5f, 0.3f * Time.deltaTime), cam.transform.position.y, cam.transform.position.z);}
+        if (transform.position.y - cam.transform.position.y < -2.5f) { cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, transform.position.y - 2.5f, 0.3f * Time.deltaTime), cam.transform.position.z);}
+        else if (transform.position.y - cam.transform.position.y > 2.5f) { cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, transform.position.y + 2.5f, 0.3f * Time.deltaTime), cam.transform.position.z);}
+    }
     void Shoot(bool atCursor)
     {
         shootTimer = 0;
