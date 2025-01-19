@@ -4,12 +4,40 @@ using UnityEngine.Rendering;
 public class Bullet : MonoBehaviour
 {
     public float damage;
-    public bool isPlayerBullet;
     public bool isPenetrative;
+    public Color color = Color.red;
 
+    private LayerMask layerMask;
+
+    public GameObject owner;
+
+    private float lifetime = 5f;
+
+    /*public Bullet(float damage, bool isPenetrative, GameObject owner, Color color)
+    {
+        this.damage = damage;
+        this.isPenetrative = isPenetrative;
+        this.owner = owner;
+        
+        GetComponent<MeshRenderer>().material.color = color;
+        GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", color * 5);
+    }*/
+    
+    
     private void Start()
     {
-        Invoke("Timeout", 5);
+        if (owner == null)
+        {
+            Debug.LogWarning("Bullet has no owner assigned! Game object will be destroyed.");
+            Destroy(gameObject);
+        }
+        
+        layerMask = owner.layer;
+        
+        Invoke(nameof(Timeout), lifetime);
+        MeshRenderer rend = GetComponent<MeshRenderer>();
+        rend.material.color = color;
+        rend.material.SetColor("_EmissionColor", color * 5f);
     }
 
     private void Timeout()
@@ -19,11 +47,11 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((isPlayerBullet && other.tag == "Enemy") || (!isPlayerBullet && other.tag == "Player"))
+        if (other.TryGetComponent(out Health health) && other.gameObject.layer != layerMask)
         {
-            other.GetComponent<Health>().TakeDamage(damage);
+            health.TakeDamage(damage);
 
-            if (!isPenetrative) { Destroy(gameObject); }
+            if (!isPenetrative) Destroy(gameObject);
         }
     }
 }

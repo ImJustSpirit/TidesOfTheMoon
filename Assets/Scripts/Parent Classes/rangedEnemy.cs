@@ -37,7 +37,7 @@ public class rangedEnemy : Enemy
         
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bullet.GetComponent<Bullet>().damage = bulletDamage;
-        bullet.GetComponent<Bullet>().isPlayerBullet = false;
+        bullet.GetComponent<Bullet>().owner = gameObject;
         
         //Vector3 skewedTarget = new Vector3(playerTransform.position.x + Random.Range(-1f, 1f), playerTransform.position.y + Random.Range(-1f, 1f), playerTransform.position.z);
         Vector3 direction = (TargetLocation - transform.position).normalized;

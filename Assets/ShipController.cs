@@ -16,14 +16,16 @@ public class ShipController : MonoBehaviour
     private GameObject bulletPrefab;
 
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 15f;
+    [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 7f;
     
     [Header("Weapons")]
+    [SerializeField] private float damage = 1f;
     [SerializeField] private float fireRate = 0.1f;
     [SerializeField] private float shootCooldown;
     [SerializeField] private float bulletSpeed = 10f;
+    [SerializeField] private bool isShooting;
 
     void Awake()
     {
@@ -38,7 +40,7 @@ public class ShipController : MonoBehaviour
         shootCooldown = fireRate;
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         input.Player.Shoot.performed += OnShoot;
     }
@@ -46,7 +48,7 @@ public class ShipController : MonoBehaviour
     private void OnDisable()
     {
         input.Player.Shoot.performed -= OnShoot;
-    }
+    }*/
 
     void Start()
     {
@@ -56,14 +58,12 @@ public class ShipController : MonoBehaviour
     void Update()
     {
         HandleMovement();
-        
-        shootCooldown -= Time.deltaTime;
+        HandleShooting();
     }
 
     //Called by Unity Input System
     void OnMove(InputValue value)
     {
-        Debug.Log("Player Moved");
         move = value.Get<Vector2>();
     }
     
@@ -87,12 +87,23 @@ public class ShipController : MonoBehaviour
     }
 
     //Called by Unity Input System
-    void OnShoot(InputAction.CallbackContext context)
+    void OnShoot(InputValue value)
     {
-        if (shootCooldown > 0) return;
+        isShooting = value.isPressed;
+    }
+
+    void HandleShooting()
+    {
+        shootCooldown -= Time.deltaTime;
+
+        if (shootCooldown > 0 || !isShooting) return;
         
         GameObject bullet = Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.Euler(Vector3.forward * 90));
         bullet.GetComponent<Rigidbody>().linearVelocity = Vector3.right * bulletSpeed;
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.damage = damage;
+        bulletScript.owner = gameObject;
+        bulletScript.color = Color.cyan;
 
         shootCooldown = fireRate;
     }

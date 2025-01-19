@@ -25,8 +25,11 @@ public class Health : MonoBehaviour
             {
                 SceneManager.LoadScene("Lv_01");
             }
-            
-            Instantiate(deathAudio, transform.position, Quaternion.identity); // Play the death sound effect ( if it exists)
+
+            if (deathAudio != null)
+            {
+                Instantiate(deathAudio, transform.position, Quaternion.identity); // Play the death sound effect ( if it exists)
+            }
             
             // Temporary but this should be an event for the main class controller to receive and die
             Destroy(gameObject);
