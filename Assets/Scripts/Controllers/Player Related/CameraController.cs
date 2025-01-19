@@ -7,9 +7,10 @@ using Vector3 = System.Numerics.Vector3;
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
-    private Camera cam = Camera.main;
+    private Camera cam;
     
-    void Update()
+    void Awake()
     {
+        cam = Camera.main;
     }
 }

@@ -215,6 +215,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelObjectPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 5499937513419543476, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: deathAudio
+      value: 
+      objectReference: {fileID: 6581478367038953852, guid: 6cdbd8cfaf8fa3f48a11d6ee3e2a5c44, type: 3}
     - target: {fileID: 5544649900838283937, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_Center.x
       value: 0
