@@ -365,13 +365,28 @@ void UpdateCrosshair()
         }
         else
         {
-            hitPointObject = null;
-            playerCrosshair.transform.position = cam.WorldToScreenPoint(mouseWorldPosition);
+            if (Input.GetMouseButton(0))
+            {
+                hitPointObject = null;
+                playerCrosshair.transform.position = cam.WorldToScreenPoint(mouseWorldPosition);
 
-            XHAIRrawImage.color = Color.white;
-            XHAIRrawImage.transform.rotation = quaternion.identity;
-            XHAIRrawImage.rectTransform.sizeDelta = new Vector2(50, 50);
-            //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
+                XHAIRrawImage.color = Color.white;
+                //XHAIRrawImage.transform.rotation = quaternion.identity;
+                XHAIRrawImage.transform.Rotate(0, 0, 360 * Time.deltaTime);
+                XHAIRrawImage.rectTransform.sizeDelta = new Vector2(40, 40);
+                //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
+            }
+            else
+            {
+                hitPointObject = null;
+                playerCrosshair.transform.position = cam.WorldToScreenPoint(mouseWorldPosition);
+
+                XHAIRrawImage.color = Color.white;
+                //XHAIRrawImage.transform.rotation = quaternion.identity;
+                XHAIRrawImage.transform.Rotate(0, 0, 90 * Time.deltaTime);
+                XHAIRrawImage.rectTransform.sizeDelta = new Vector2(50, 50);
+                //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
+            }
         }
     }
 }
