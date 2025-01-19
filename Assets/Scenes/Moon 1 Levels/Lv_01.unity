@@ -272,6 +272,10 @@ PrefabInstance:
       value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: aimRestriction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: shipRotateSpeed
       value: 15
       objectReference: {fileID: 0}
