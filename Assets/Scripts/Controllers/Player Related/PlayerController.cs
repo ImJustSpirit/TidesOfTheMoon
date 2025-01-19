@@ -62,34 +62,42 @@ public class PlayerController : MonoBehaviour
         UpdateCrosshair();
         
         var CrosshairPositionButForwards = cam.ScreenToWorldPoint(new Vector3(playerCrosshair.transform.position.x, playerCrosshair.transform.position.y, playerCrosshair.transform.position.z + 10));
-        var ShipPositionButScreenSpace = cam.WorldToScreenPoint(transform.position);
+        var ShipPositionButScreenSpace = cam.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z));
         
         transform.LookAt(CrosshairPositionButForwards);
 
         if (ShipPositionButScreenSpace.x < playerCrosshair.transform.position.x)
         {
             float difference = Mathf.Abs(ShipPositionButScreenSpace.x - playerCrosshair.transform.position.x) / 10f;
-            if (difference < 1) return;
-            transform.position += new Vector3((followCursorSpeed * difference) * Time.deltaTime, 0, 0);
+            if (difference > 1)
+            {
+                transform.position += new Vector3((followCursorSpeed * difference) * Time.deltaTime, 0, 0);
+            }
         }
         if (ShipPositionButScreenSpace.x > playerCrosshair.transform.position.x)
         {
             float difference = Mathf.Abs(ShipPositionButScreenSpace.x - playerCrosshair.transform.position.x) / 10f;
-            if (difference < 1) return;
-            transform.position += new Vector3(-(followCursorSpeed * difference) * Time.deltaTime, 0, 0);
+            if (difference > 1)
+            {
+                transform.position += new Vector3(-(followCursorSpeed * difference) * Time.deltaTime, 0, 0);
+            }
         }
         if (ShipPositionButScreenSpace.y < playerCrosshair.transform.position.y)
         {
             float difference = Mathf.Abs(ShipPositionButScreenSpace.y - playerCrosshair.transform.position.y) / 10f;
-            if (difference < 1) return;
-            transform.position += new Vector3(0, (followCursorSpeed * difference) * Time.deltaTime, 0);
+            if (difference > 1)
+            {
+                transform.position += new Vector3(0, (followCursorSpeed * difference) * Time.deltaTime, 0);
+            }
         }
         if (ShipPositionButScreenSpace.y > playerCrosshair.transform.position.y)
         {
             float difference = Mathf.Abs(ShipPositionButScreenSpace.y - playerCrosshair.transform.position.y) / 10f;
-            Debug.Log(difference);
-            if (difference < 1) return;
-            transform.position += new Vector3(0, -(followCursorSpeed * difference) * Time.deltaTime, 0);
+            if (difference > 1)
+            {
+                transform.position += new Vector3(0, -(followCursorSpeed * difference) * Time.deltaTime, 0);
+
+            } 
         }
         
         if (shootTimer < shootCooldown)
