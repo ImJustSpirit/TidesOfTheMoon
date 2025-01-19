@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 bulletOffset;
     public GameObject LeftMarker;
     public GameObject RightMarker;
-    
+
     private Camera cam;
     [SerializeField] private LayerMask layerMask;
     public GameObject playerCrosshair;
@@ -44,11 +44,14 @@ public class PlayerController : MonoBehaviour
     public float stillTimer = -5f;
     [SerializeField] private float rotationLimit = 45f;
     [SerializeField] private float followCursorSpeed = 1f;
+    [SerializeField] private bool aimRestriction = false;
+    [SerializeField] private float shipAimYOffset = 0.5f;
+    [SerializeField] private float aimRestrictionRadius = 800f;
 
     private void Start()
     {
         //Application.targetFrameRate = 180;
-        
+
         cam = Camera.main;
 
         XHAIRrawImage = playerCrosshair.GetComponent<RawImage>();
@@ -60,10 +63,15 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateCrosshair();
-        
-        var CrosshairPositionButForwards = cam.ScreenToWorldPoint(new Vector3(playerCrosshair.transform.position.x, playerCrosshair.transform.position.y, playerCrosshair.transform.position.z + 10));
-        var ShipPositionButScreenSpace = cam.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z));
-        
+
+        var CrosshairPositionButForwards = cam.ScreenToWorldPoint(new Vector3(playerCrosshair.transform.position.x,
+            playerCrosshair.transform.position.y, playerCrosshair.transform.position.z + 10));
+        var ShipPositionButScreenSpace =
+            cam.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + shipAimYOffset,
+                transform.position.z));
+
+
+
         transform.LookAt(CrosshairPositionButForwards);
 
         if (ShipPositionButScreenSpace.x < playerCrosshair.transform.position.x)
@@ -74,6 +82,7 @@ public class PlayerController : MonoBehaviour
                 transform.position += new Vector3((followCursorSpeed * difference) * Time.deltaTime, 0, 0);
             }
         }
+
         if (ShipPositionButScreenSpace.x > playerCrosshair.transform.position.x)
         {
             float difference = Mathf.Abs(ShipPositionButScreenSpace.x - playerCrosshair.transform.position.x) / 10f;
@@ -82,6 +91,7 @@ public class PlayerController : MonoBehaviour
                 transform.position += new Vector3(-(followCursorSpeed * difference) * Time.deltaTime, 0, 0);
             }
         }
+
         if (ShipPositionButScreenSpace.y < playerCrosshair.transform.position.y)
         {
             float difference = Mathf.Abs(ShipPositionButScreenSpace.y - playerCrosshair.transform.position.y) / 10f;
@@ -90,6 +100,7 @@ public class PlayerController : MonoBehaviour
                 transform.position += new Vector3(0, (followCursorSpeed * difference) * Time.deltaTime, 0);
             }
         }
+
         if (ShipPositionButScreenSpace.y > playerCrosshair.transform.position.y)
         {
             float difference = Mathf.Abs(ShipPositionButScreenSpace.y - playerCrosshair.transform.position.y) / 10f;
@@ -97,13 +108,14 @@ public class PlayerController : MonoBehaviour
             {
                 transform.position += new Vector3(0, -(followCursorSpeed * difference) * Time.deltaTime, 0);
 
-            } 
+            }
         }
-        
+
         if (shootTimer < shootCooldown)
         {
             shootTimer += Time.deltaTime;
         }
+
         if (Input.GetMouseButton(0) && shootTimer >= shootCooldown)
         {
             Shoot(true);
@@ -123,7 +135,7 @@ public class PlayerController : MonoBehaviour
             //Lean
             shipRotationX -= shipRotateSpeed * Time.deltaTime;
             if (shipRotationX < -45) { shipRotationX = -45; }
-            
+
             if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
         if ((Input.GetKey(KeyCode.S) || Gamepad.current.leftStick.down.isPressed) && transform.position.y > -2)
@@ -135,7 +147,7 @@ public class PlayerController : MonoBehaviour
             //Lean
             shipRotationX += shipRotateSpeed * Time.deltaTime;
             if (shipRotationX > 45) { shipRotationX = 45; }
-            
+
             if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
         if ((Input.GetKey(KeyCode.D) || Gamepad.current.leftStick.right.isPressed) && transform.position.x < 4)
@@ -146,7 +158,7 @@ public class PlayerController : MonoBehaviour
 
             //Lean
             shipRotationZ -= shipRotateSpeed * Time.deltaTime;
-            
+
             if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
         if ((Input.GetKey(KeyCode.A) || Gamepad.current.leftStick.left.isPressed) && transform.position.x > -4)
@@ -157,14 +169,14 @@ public class PlayerController : MonoBehaviour
 
             //Lean
             shipRotationZ += shipRotateSpeed * Time.deltaTime;
-            
+
             if (stillTimer < -5) { stillTimer += 30f * Time.deltaTime; }
         }
 
         //Roll
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (leftRollTimer < RollCooldown) 
+            if (leftRollTimer < RollCooldown)
             {
                 Debug.Log("Left Roll");
                 controlledSpeed = controlledSpeed * rollBoost;
@@ -172,7 +184,7 @@ public class PlayerController : MonoBehaviour
                 leftRollTimer = 100;
                 hasRolled = true;
             }
-            else 
+            else
             {
                 leftRollTimer = 0;
                 hasRolled = false;
@@ -223,7 +235,7 @@ public class PlayerController : MonoBehaviour
         // if (stillTimer > -15) { stillTimer -= 1f * Time.deltaTime; }
         // cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(cam.transform.position.x, cam.transform.position.y, stillTimer), 3f * Time.deltaTime);
         // cam.fieldOfView =  Mathf.Lerp(cam.fieldOfView, 20 + (4 * (stillTimer + 15f)), 3f * Time.deltaTime);
-        
+
         if (shootTimer < shootCooldown)
         {
             shootTimer += Time.deltaTime;
@@ -258,7 +270,7 @@ public class PlayerController : MonoBehaviour
     {
         shootTimer = 0;
         GetComponent<AudioSource>().Play();
-        
+
         if (shootSide)
         {
             bulletOffset = RightMarker.transform.position;
@@ -285,28 +297,32 @@ public class PlayerController : MonoBehaviour
             newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed;
         }
     }
+
     void ShootAtCursor(GameObject bullet)
     {
         //Gets the position of the mouse in the world
-        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z + 100000));
-        
+        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,
+            transform.position.z + 100000));
+
         // Calculate the direction from the ship to the mouse position
         Vector3 direction = (mouseWorldPosition - cam.transform.position).normalized;
 
         //Fires a ray to the intended hit point from the camera
         Physics.Raycast(cam.transform.position, direction, out RaycastHit hit, Mathf.Infinity, layerMask);
-        
+
         // Perform a raycast to check if it hits something
         if (hit.collider is not null)
         {
-            
-            
+
+
             // Point towards the hit point
-            bullet.transform.LookAt(hit.collider.transform.position); // Hi it's Oliver I made it aim at the object directly
+            bullet.transform.LookAt(hit.collider.transform
+                .position); // Hi it's Oliver I made it aim at the object directly
             bullet.transform.rotation = Quaternion.Euler(bullet.transform.rotation.eulerAngles + new Vector3(90, 0, 0));
 
             // Set the velocity to shoot towards the hit point
-            bullet.GetComponent<Rigidbody>().linearVelocity = (hit.collider.transform.position - bullet.transform.position).normalized * bulletSpeed;
+            bullet.GetComponent<Rigidbody>().linearVelocity =
+                (hit.collider.transform.position - bullet.transform.position).normalized * bulletSpeed;
         }
         else
         {
@@ -318,17 +334,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-void UpdateCrosshair()
+    void UpdateCrosshair()
     {
         //Gets the position of the mouse in the world
-        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
-        
+        Vector3 mouseWorldPosition =
+            cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
+
         // Calculate the direction from the ship to the mouse position
         Vector3 direction = (mouseWorldPosition - cam.transform.position).normalized;
 
         //Fires a ray to the intended hit point from the camera
         Physics.Raycast(cam.transform.position, direction, out RaycastHit hit, Mathf.Infinity, layerMask);
-            
+
         // Perform a raycast to check if it hits something
         if (hit.collider != null)
         {
@@ -340,19 +357,19 @@ void UpdateCrosshair()
             // Calculate the width and height in screen space
             float width = maxScreenPoint.x - minScreenPoint.x;
             float height = maxScreenPoint.y - minScreenPoint.y;
-            
+
             float maxLength = Mathf.Max(width / 2f, height / 2f);
 
             // Update the RawImage size
             //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(maxLength, maxLength);
-            
+
             if (Input.GetMouseButton(0))
             {
                 XHAIRrawImage.color = Color.red;
                 XHAIRrawImage.transform.Rotate(0, 0, 360 * Time.deltaTime);
                 XHAIRrawImage.rectTransform.sizeDelta = new Vector2(maxLength / 1.5f, maxLength / 1.5f);
                 //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(25, 25);
-                
+
                 transform.LookAt(hit.collider.transform.position);
             }
             else
@@ -388,5 +405,39 @@ void UpdateCrosshair()
                 //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
             }
         }
+
+        if (aimRestriction)
+        {
+            ClampCrosshairToCircle(); // Clamp the crosshair to the circle
+        }
+    }
+
+    void ClampCrosshairToCircle()
+    {
+        Vector3 playerScreenPosition =
+            Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + shipAimYOffset, transform.position.z)); // Convert player's current position to screen space
+        Vector3 crosshairScreenPosition = new Vector3(
+            playerCrosshair.transform.position.x,
+            playerCrosshair.transform.position.y,
+            playerCrosshair.transform.position.z
+        );
+
+        // Calculate the direction and distance between the player and the crosshair
+        Vector3 direction = crosshairScreenPosition - playerScreenPosition;
+        float distance = direction.magnitude;
+
+        // Check if the distance is greater than the circle radius (aimRestrictionRadiusRadius units)
+        float maxRadius = aimRestrictionRadius;
+        if (distance > maxRadius)
+        {
+            // Clamp the position to the circle's boundary
+            crosshairScreenPosition = playerScreenPosition + (direction.normalized * maxRadius);
+        }
+
+        // Convert back to world space and update crosshair position
+        playerCrosshair.transform.position = new Vector3(
+            crosshairScreenPosition.x,
+            crosshairScreenPosition.y,
+            0);
     }
 }
