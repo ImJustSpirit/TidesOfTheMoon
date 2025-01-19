@@ -362,7 +362,7 @@ void UpdateCrosshair()
 
             XHAIRrawImage.color = Color.white;
             XHAIRrawImage.transform.rotation = quaternion.identity;
-            XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
+            XHAIRrawImage.rectTransform.sizeDelta = new Vector2(50, 50);
             //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
         }
     }
