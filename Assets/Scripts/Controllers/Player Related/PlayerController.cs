@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
     private RawImage XHAIRrawImage;
 
     public float stillTimer = -5f;
+    [SerializeField] private float rotationLimit = 45f;
+    [SerializeField] private float followCursorSpeed = 1f;
 
     private void Start()
     {
@@ -54,7 +56,53 @@ public class PlayerController : MonoBehaviour
         //GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
     }
 
-    // OLD MOVEMENT SYSTEM
+    // SHIP FOLLOWS CURSOR SYSTEM
+    private void Update()
+    {
+        UpdateCrosshair();
+        
+        var CrosshairPositionButForwards = cam.ScreenToWorldPoint(new Vector3(playerCrosshair.transform.position.x, playerCrosshair.transform.position.y, playerCrosshair.transform.position.z + 10));
+        var ShipPositionButScreenSpace = cam.WorldToScreenPoint(transform.position);
+        
+        transform.LookAt(CrosshairPositionButForwards);
+
+        if (ShipPositionButScreenSpace.x < playerCrosshair.transform.position.x)
+        {
+            float difference = Mathf.Abs(ShipPositionButScreenSpace.x - playerCrosshair.transform.position.x) / 10f;
+            if (difference < 1) return;
+            transform.position += new Vector3((followCursorSpeed * difference) * Time.deltaTime, 0, 0);
+        }
+        if (ShipPositionButScreenSpace.x > playerCrosshair.transform.position.x)
+        {
+            float difference = Mathf.Abs(ShipPositionButScreenSpace.x - playerCrosshair.transform.position.x) / 10f;
+            if (difference < 1) return;
+            transform.position += new Vector3(-(followCursorSpeed * difference) * Time.deltaTime, 0, 0);
+        }
+        if (ShipPositionButScreenSpace.y < playerCrosshair.transform.position.y)
+        {
+            float difference = Mathf.Abs(ShipPositionButScreenSpace.y - playerCrosshair.transform.position.y) / 10f;
+            if (difference < 1) return;
+            transform.position += new Vector3(0, (followCursorSpeed * difference) * Time.deltaTime, 0);
+        }
+        if (ShipPositionButScreenSpace.y > playerCrosshair.transform.position.y)
+        {
+            float difference = Mathf.Abs(ShipPositionButScreenSpace.y - playerCrosshair.transform.position.y) / 10f;
+            Debug.Log(difference);
+            if (difference < 1) return;
+            transform.position += new Vector3(0, -(followCursorSpeed * difference) * Time.deltaTime, 0);
+        }
+        
+        if (shootTimer < shootCooldown)
+        {
+            shootTimer += Time.deltaTime;
+        }
+        if (Input.GetMouseButton(0) && shootTimer >= shootCooldown)
+        {
+            Shoot(true);
+        }
+    }
+
+    // W A S D SHIP MOVEMENT SYSTEM
     /* void Update()
     {
         // WASD
@@ -187,17 +235,17 @@ public class PlayerController : MonoBehaviour
         UpdateCrosshair();
     } */
 
-    // NEW MOVEMENT SYSTEM
-    void Update()
+    // CONTROL SHIP DIRECTLY SYSTEM
+    /*void Update()
     {
         currentShipRotation = Vector2.Lerp(currentShipRotation, new Vector2(Gamepad.current.leftStick.ReadValue().x, Gamepad.current.leftStick.ReadValue().y), shipRotateSpeed * Time.deltaTime);
-        transform.rotation = Quaternion.Euler(new Vector3(-90f * currentShipRotation.y, 90f * currentShipRotation.x, 0));
+        transform.rotation = Quaternion.Euler(new Vector3(-rotationLimit * currentShipRotation.y, rotationLimit * currentShipRotation.x, 0));
         transform.position += transform.forward * forwardSpeed * Time.deltaTime;
         if (transform.position.x - cam.transform.position.x < -4.5f) { cam.transform.position = new Vector3(Mathf.Lerp(cam.transform.position.x, transform.position.x - 4.5f, 0.3f * Time.deltaTime), cam.transform.position.y, cam.transform.position.z);}
         else if (transform.position.x - cam.transform.position.x > 4.5f) { cam.transform.position = new Vector3(Mathf.Lerp(cam.transform.position.x, transform.position.x + 4.5f, 0.3f * Time.deltaTime), cam.transform.position.y, cam.transform.position.z);}
         if (transform.position.y - cam.transform.position.y < -2.5f) { cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, transform.position.y - 2.5f, 0.3f * Time.deltaTime), cam.transform.position.z);}
         else if (transform.position.y - cam.transform.position.y > 2.5f) { cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, transform.position.y + 2.5f, 0.3f * Time.deltaTime), cam.transform.position.z);}
-    }
+    }*/
     void Shoot(bool atCursor)
     {
         shootTimer = 0;
@@ -312,7 +360,7 @@ void UpdateCrosshair()
             hitPointObject = null;
             playerCrosshair.transform.position = cam.WorldToScreenPoint(mouseWorldPosition);
 
-            XHAIRrawImage.color = Color.clear;
+            XHAIRrawImage.color = Color.white;
             XHAIRrawImage.transform.rotation = quaternion.identity;
             XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);
             //XHAIRrawImage.rectTransform.sizeDelta = new Vector2(10, 10);

@@ -25,8 +25,8 @@ public class rangedEnemy : Enemy
             TargetLocation = new Vector3(Random.Range(-4f, 4f), Random.Range(-2f, 2f), playerTransform.position.z);
             
             Invoke("ShootBullet", 0f);
-            Invoke("ShootBullet", 0.1f);
-            Invoke("ShootBullet", 0.2f);
+            //Invoke("ShootBullet", 0.1f);
+            //Invoke("ShootBullet", 0.2f);
             shootTimer = 0f;
         }
     }

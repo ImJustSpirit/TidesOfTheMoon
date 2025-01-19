@@ -104,8 +104,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionDamage: 0
   playerTransform: {fileID: 0}
-  shootRate: 1
-  bulletSpeed: 10
+  shootRate: 5
+  bulletSpeed: 5
   bulletDamage: 1
   TargetLocation: {x: 0, y: 0, z: 0}
   bulletPrefab: {fileID: 0}

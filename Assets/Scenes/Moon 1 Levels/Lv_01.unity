@@ -209,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4928746999860752445, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5456033689150676657, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_Name
@@ -233,6 +233,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5770677729618775851, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7089843651806836106, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: spawnRateMultiplier
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8076367335599897718, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
@@ -269,7 +273,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: shipRotateSpeed
-      value: 5
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: followCursorSpeed
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3090400876628049448, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
@@ -303,7 +311,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1965026361
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -387,7 +395,7 @@ Transform:
   m_GameObject: {fileID: 1965026360}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.1188}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 0.020000001, y: 0.020000001, z: 0.020000001}
   m_ConstrainProportionsScale: 1
   m_Children: []
