@@ -9,11 +9,14 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public enum Playstyle {ControlShip, ControlCursor}
+    [Header ("Macro Variables")]
+    public Playstyle CurrentPlaystyle = Playstyle.ControlShip;
+    
     public bool shootAtCusor = false;
 
     public float forwardSpeed = 20f;
     public float shipRotateSpeed = 450f;
-    public Vector2 currentShipRotation;
 
     // Rolling
     public float RollCooldown = 0.5f;
@@ -41,12 +44,20 @@ public class PlayerController : MonoBehaviour
     public GameObject playerCrosshair;
     private RawImage XHAIRrawImage;
 
+    [Header ("Ship Follows Cursor")]
     public float stillTimer = -5f;
     [SerializeField] private float rotationLimit = 45f;
     [SerializeField] private float followCursorSpeed = 1f;
-    [SerializeField] private bool aimRestriction = false;
     [SerializeField] private float shipAimYOffset = 0.5f;
+    
+    [Header ("Ship Follows Cursor CircleRestriction")]
+    [SerializeField] private bool aimRestriction = false;
     [SerializeField] private float aimRestrictionRadius = 800f;
+    
+    [Header ("New Control Ship System")]
+    public Vector2 currentShipRotation;
+    public Vector2 movementVector;
+    
 
     private void Start()
     {
@@ -59,8 +70,75 @@ public class PlayerController : MonoBehaviour
         //GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
     }
 
+    // Update function now diverts to another function depending on chosen playstyle
+    void Update()
+    {
+        switch (CurrentPlaystyle)
+        {
+            case Playstyle.ControlShip:
+                ControlShipUpdate();
+                break;
+            case Playstyle.ControlCursor:
+                ControlCursorUpdate();
+                break;
+            default:
+                Debug.LogError("Invalid Playstyle");
+                break;
+        }
+    }
+    
+    // NEW CONTROL SHIP DIRECTLY SYSTEM
+    #region New ControlShipSystem
+    void ControlShipUpdate()
+    {
+        // Vertical Movement
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) { movementVector.y = 0; }
+        else if (Input.GetKey(KeyCode.W)) { movementVector.y = 1; }
+        else if (Input.GetKey(KeyCode.S)) { movementVector.y = -1; }
+        else { movementVector.y = 0; }
+        
+        // Horizontal Movement
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A)) { movementVector.x = 0; }
+        else if (Input.GetKey(KeyCode.D)) { movementVector.x = 1; }
+        else if (Input.GetKey(KeyCode.A)) { movementVector.x = -1; }
+        else { movementVector.x = 0; }
+            
+        // Diagonal Movement
+        if (movementVector.x == 1 && movementVector.y == 1) { movementVector = new Vector2(0.707f, 0.707f); }
+        else if (movementVector.x == 1 && movementVector.y == -1) { movementVector = new Vector2(0.707f, -0.707f); }
+        else if (movementVector.x == -1 && movementVector.y == 1) { movementVector = new Vector2(-0.707f, 0.707f); }
+        else if (movementVector.x == -1 && movementVector.y == -1) { movementVector = new Vector2(-0.707f, -0.707f); }
+        
+        //Moving
+        Debug.Log(movementVector);
+        
+        // Would Really like a better way of using both controller and keyboard inputs, this isn't ideal.
+        // Should be able to apply 'Gamepad.current.leftStick.ReadValue()' to movementVector, but I need to think of a way to do it so that it doesn't always override the keyboard input.
+        if (Gamepad.current != null) { currentShipRotation = Vector2.Lerp(currentShipRotation, Gamepad.current.leftStick.ReadValue(), shipRotateSpeed * Time.deltaTime); }
+        else { currentShipRotation = Vector2.Lerp(currentShipRotation, movementVector, shipRotateSpeed * Time.deltaTime); }
+        
+        // Rotation Limit
+        transform.rotation = Quaternion.Euler(-70f * currentShipRotation.y, 70f * currentShipRotation.x, 0);
+       
+        // Move Forward
+        transform.position += transform.forward * forwardSpeed * Time.deltaTime;
+        
+        // Camera Constraints
+        if (transform.position.x - cam.transform.position.x < -4.5f) { cam.transform.position = new Vector3(Mathf.Lerp(cam.transform.position.x, transform.position.x - 4.5f, 0.3f * Time.deltaTime), cam.transform.position.y, cam.transform.position.z);}
+        else if (transform.position.x - cam.transform.position.x > 4.5f) { cam.transform.position = new Vector3(Mathf.Lerp(cam.transform.position.x, transform.position.x + 4.5f, 0.3f * Time.deltaTime), cam.transform.position.y, cam.transform.position.z);}
+        if (transform.position.y - cam.transform.position.y < -2.5f) { cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, transform.position.y - 2.5f, 0.3f * Time.deltaTime), cam.transform.position.z);}
+        else if (transform.position.y - cam.transform.position.y > 2.5f) { cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, transform.position.y + 2.5f, 0.3f * Time.deltaTime), cam.transform.position.z);}
+
+        // Shooting
+        if (shootTimer < shootCooldown) { shootTimer += Time.deltaTime; }
+        if (Input.GetKey(KeyCode.Space) && shootTimer >= shootCooldown) { Shoot(false); } // Forward Shooting
+        if (Input.GetMouseButton(0) && shootTimer >= shootCooldown) { Shoot(true); } // Cursor Shooting
+    }
+    #endregion
+    
     // SHIP FOLLOWS CURSOR SYSTEM
-    private void Update()
+    #region ShipFollowsCursor System
+    private void ControlCursorUpdate()
     {
         UpdateCrosshair();
 
@@ -121,8 +199,10 @@ public class PlayerController : MonoBehaviour
             Shoot(true);
         }
     }
+    #endregion
 
     // W A S D SHIP MOVEMENT SYSTEM
+    #region Old WASD System
     /* void Update()
     {
         // WASD
@@ -254,8 +334,10 @@ public class PlayerController : MonoBehaviour
 
         UpdateCrosshair();
     } */
+    #endregion
 
     // CONTROL SHIP DIRECTLY SYSTEM
+    #region Old ControlShipSystem
     /*void Update()
     {
         currentShipRotation = Vector2.Lerp(currentShipRotation, new Vector2(Gamepad.current.leftStick.ReadValue().x, Gamepad.current.leftStick.ReadValue().y), shipRotateSpeed * Time.deltaTime);
@@ -266,6 +348,8 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y - cam.transform.position.y < -2.5f) { cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, transform.position.y - 2.5f, 0.3f * Time.deltaTime), cam.transform.position.z);}
         else if (transform.position.y - cam.transform.position.y > 2.5f) { cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, transform.position.y + 2.5f, 0.3f * Time.deltaTime), cam.transform.position.z);}
     }*/
+    #endregion
+    
     void Shoot(bool atCursor)
     {
         shootTimer = 0;
@@ -408,7 +492,7 @@ public class PlayerController : MonoBehaviour
 
         if (aimRestriction)
         {
-            ClampCrosshairToCircle(); // Clamp the crosshair to the circle
+            ClampCrosshairToCircle();
         }
     }
 
