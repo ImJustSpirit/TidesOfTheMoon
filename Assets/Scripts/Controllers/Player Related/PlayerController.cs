@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
         XHAIRrawImage = playerCrosshair.GetComponent<RawImage>();
 
-        //GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
+        GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
     }
 
     // Update function now diverts to another function depending on chosen playstyle

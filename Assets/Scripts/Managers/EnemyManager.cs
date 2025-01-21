@@ -31,13 +31,13 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        // Gradually increase spawn rate over time
+        /* Gradually increase spawn rate over time
         timeSinceLastSpawnRateUpdate += Time.deltaTime;
         if (timeSinceLastSpawnRateUpdate >= spawnRateIncreaseInterval)
         {
             timeSinceLastSpawnRateUpdate = 0.0f;
             UpdateSpawnRate();
-        }
+        }*/
     }
 
     void SpawnRangedEnemies()
