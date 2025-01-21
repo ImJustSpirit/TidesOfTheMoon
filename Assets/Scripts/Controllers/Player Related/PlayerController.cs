@@ -91,6 +91,8 @@ public class PlayerController : MonoBehaviour
     #region New ControlShipSystem
     void ControlShipUpdate()
     {
+        UpdateCrosshair();
+        
         // Vertical Movement
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) { movementVector.y = 0; }
         else if (Input.GetKey(KeyCode.W)) { movementVector.y = 1; }
