@@ -18,15 +18,24 @@ public class EnemySpawnBoxController : MonoBehaviour
     [Header("Dev Variable")]
     [SerializeField] private bool showAreaBounds = false;
 
+    // Variables that change for each enemy
     private GameObject enemyPrefabObject;
+    private Vector3 spawnPosition;
     
     private Transform playerTransform;
     [SerializeField] private GameObject bulletPrefab;
+    
+    private List<GameObject> ActiveEnemiesInSpawnArea = new List<GameObject>();
+    private GameObject previousSequenceObject;
+    
+    private int randonNumber;
+    private int randomSequenceVectorAmount;
+    private Vector3 randonSequenceVector;
 
     void Start()
     {
         // Oliver - Mildly inefficient but I think this is okay
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        //playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
         if (!showAreaBounds)
         {
@@ -39,7 +48,8 @@ public class EnemySpawnBoxController : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Debug.Log("Attempting Enemy Spawns");
+            //Debug.Log("Attempting Enemy Spawns");
+            Destroy(GetComponent<BoxCollider>());
             
             Bounds enemySpawnAreaBounds = transform.GetChild(0).GetComponent<MeshRenderer>().bounds;
 
@@ -71,7 +81,7 @@ public class EnemySpawnBoxController : MonoBehaviour
                     // Spawn enemies instantly if not sequential
                     for (int x = 0; x < currentEnemyConfiguration.amount; x++)
                     {
-                        SpawnEnemy(currentEnemyConfiguration.enemyType.ToString(), enemySpawnAreaBounds);
+                        SpawnEnemy(currentEnemyConfiguration.enemyType.ToString(), enemySpawnAreaBounds, false);
                     }
                 }
             }
@@ -82,12 +92,39 @@ public class EnemySpawnBoxController : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            SpawnEnemy(enemyPrefab, enemyBounds);
+            if (i > 0 && i < amount - 1)
+            {
+                SpawnEnemy(enemyPrefab, enemyBounds, true);
+            }
+            else
+            {
+                randomSequenceVectorAmount = 4;
+                switch (randonNumber)
+                {
+                    case 0:
+                        randonSequenceVector = new Vector3(randomSequenceVectorAmount, 0, 0);
+                        break;
+                    case 1:
+                        randonSequenceVector = new Vector3(-randomSequenceVectorAmount, 0, 0);
+                        break;
+                    case 2:
+                        randonSequenceVector = new Vector3(0, randomSequenceVectorAmount, 0);
+                        break;
+                    case 3:
+                        randonSequenceVector = new Vector3(0, -randomSequenceVectorAmount, 0);
+                        break;
+                    default:
+                        Debug.LogError("Random Number is not valid");
+                        break;
+                }
+                
+                SpawnEnemy(enemyPrefab, enemyBounds, false);
+            }
             yield return new WaitForSeconds(delay); // Wait for specified delay
         }
     }
     
-    private void SpawnEnemy(string enemyPrefab, Bounds enemyBounds)
+    private void SpawnEnemy(string enemyPrefab, Bounds enemyBounds, bool isSequential)
     {
         switch (enemyPrefab)
         {
@@ -107,13 +144,28 @@ public class EnemySpawnBoxController : MonoBehaviour
         
         if (enemyPrefab == null) return;
 
-        // You can use bounds or define spawn logic here
-        Vector3 spawnPosition = new Vector3(
-            Random.Range(enemyBounds.min.x, enemyBounds.max.x), // Random X Within Bounds
-            Random.Range(enemyBounds.min.y, enemyBounds.max.y), // Random Y Within Bounds
-            enemyBounds.center.z);                              // Z Centered Within Bounds
-
-
+        if (isSequential)
+        {
+            previousSequenceObject = ActiveEnemiesInSpawnArea[ActiveEnemiesInSpawnArea.Count - 1];
+        }
+        else
+        {
+            previousSequenceObject = null;
+        }
+        
+        if (previousSequenceObject == null)
+        {
+            spawnPosition = new Vector3(
+                Random.Range(enemyBounds.min.x, enemyBounds.max.x), // Random X Within Bounds
+                Random.Range(enemyBounds.min.y, enemyBounds.max.y), // Random Y Within Bounds
+                enemyBounds.center.z);                              // Z Centered Within Bounds
+        }
+        else
+        {
+            
+            spawnPosition = previousSequenceObject.transform.position + randonSequenceVector;
+        }
+        
         Enemy newEnemyClass = Instantiate(enemyPrefabObject, spawnPosition, Quaternion.identity).GetComponent<Enemy>();
         newEnemyClass.playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         if (newEnemyClass is rangedEnemy)
@@ -121,18 +173,6 @@ public class EnemySpawnBoxController : MonoBehaviour
             newEnemyClass.GetComponent<rangedEnemy>().bulletPrefab = bulletPrefab;
         }
         
+        ActiveEnemiesInSpawnArea.Add(newEnemyClass.gameObject);
     }
-    
-    /*private GameObject GetEnemyPrefab(string enemyType)
-    {
-        // Logic to fetch the correct prefab
-        return enemyType switch
-        {
-            "Ranged1" => ranged1,
-            "Ranged2" => ranged2,
-            "Melee1" => melee1,
-            "Melee2" => melee2,
-            _ => null,
-        };
-    }*/
 }
