@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &33669289 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3377173268174748181, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+  m_PrefabInstance: {fileID: 65808815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &65808815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -220,6 +225,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: leftMarker
+      value: 
+      objectReference: {fileID: 33669289}
+    - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: rightMarker
+      value: 
+      objectReference: {fileID: 1002713822}
+    - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: forwardSpeed
       value: 4
       objectReference: {fileID: 0}
@@ -233,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: CurrentPlaystyle
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: followCursorSpeed
@@ -244,6 +257,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+--- !u!1 &1002713822 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8271779467591467210, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+  m_PrefabInstance: {fileID: 65808815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

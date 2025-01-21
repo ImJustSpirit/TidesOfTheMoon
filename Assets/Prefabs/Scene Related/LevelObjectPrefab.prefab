@@ -5911,28 +5911,12 @@ PrefabInstance:
       value: SpaceShip
       objectReference: {fileID: 0}
     - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
-      propertyPath: forwardSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
-      propertyPath: shootCooldown
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
       propertyPath: playerCrosshair
       value: 
       objectReference: {fileID: 3834165001724169148}
     - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
-      propertyPath: shipRotateSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
       propertyPath: CurrentPlaystyle
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3415218850646522426, guid: 7b622c7dee2a6f942b8396e9c54e0748, type: 3}
-      propertyPath: followCursorSpeed
-      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
