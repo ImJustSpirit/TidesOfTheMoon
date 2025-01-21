@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         currentSpawnRate = initialSpawnRate;
-        InvokeRepeating(nameof(SpawnRangedEnemies), 0, currentSpawnRate);
+        //InvokeRepeating(nameof(SpawnRangedEnemies), 0, currentSpawnRate);
         //InvokeRepeating(nameof(SpawnMeleeEnemies), 0, currentSpawnRate);
     }
 

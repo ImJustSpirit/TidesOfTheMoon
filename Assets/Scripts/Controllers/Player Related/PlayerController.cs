@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
         else if (movementVector.x == -1 && movementVector.y == -1) { movementVector = new Vector2(-0.707f, -0.707f); }
         
         //Moving
-        Debug.Log(movementVector);
+        //Debug.Log(movementVector);
         
         // Would Really like a better way of using both controller and keyboard inputs, this isn't ideal.
         // Should be able to apply 'Gamepad.current.leftStick.ReadValue()' to movementVector, but I need to think of a way to do it so that it doesn't always override the keyboard input.

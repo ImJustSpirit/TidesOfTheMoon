@@ -51,9 +51,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpawnConfigurations:
   - enemyType: 0
-    amount: 0
-    spawnSequentially: 0
-    sequentialDelay: 0
+    amount: 105
+    spawnSequentially: 1
+    sequentialDelay: 0.2
+  ranged1: {fileID: 9022419925783237285, guid: 5ebd213fd52b00547a1c6bff1dc65abe, type: 3}
+  ranged2: {fileID: 0}
+  melee1: {fileID: 0}
+  melee2: {fileID: 8190087876005763917, guid: 3b2d8978f3053014b963da8b8b3a7265, type: 3}
+  bulletPrefab: {fileID: 5338106171423119865, guid: cfe25fed7798af141bd7e2fbf4986ce8, type: 3}
 --- !u!33 &4976681742956421352
 MeshFilter:
   m_ObjectHideFlags: 0

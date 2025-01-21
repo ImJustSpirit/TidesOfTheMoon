@@ -105,7 +105,7 @@ MonoBehaviour:
   collisionDamage: 0
   playerTransform: {fileID: 0}
   shootRate: 5
-  bulletSpeed: 5
+  bulletSpeed: 50
   bulletDamage: 1
   TargetLocation: {x: 0, y: 0, z: 0}
   bulletPrefab: {fileID: 0}
