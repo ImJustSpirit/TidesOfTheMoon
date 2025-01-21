@@ -244,8 +244,98 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+--- !u!1001 &1378219635
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5781621862775790364, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_Name
+      value: EnemySpawnBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592291232881431374, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: enemySpawnConfigurations.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592291232881431374, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: enemySpawnConfigurations.Array.data[0].amount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592291232881431374, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: enemySpawnConfigurations.Array.data[1].amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592291232881431374, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: enemySpawnConfigurations.Array.data[2].amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592291232881431374, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: enemySpawnConfigurations.Array.data[0].sequentialDelay
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592291232881431374, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: enemySpawnConfigurations.Array.data[1].sequentialDelay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592291232881431374, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: enemySpawnConfigurations.Array.data[0].spawnSequentially
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592291232881431374, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: enemySpawnConfigurations.Array.data[1].spawnSequentially
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110602961568981733, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 70b8c1ad49d87b14189fbb375fe02ed6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 65808815}
+  - {fileID: 1378219635}
