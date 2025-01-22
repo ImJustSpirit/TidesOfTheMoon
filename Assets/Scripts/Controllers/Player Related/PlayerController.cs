@@ -345,22 +345,27 @@ public class PlayerController : MonoBehaviour
     {
         // Move the ship forward continuously
         // transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+        
+        UpdateCrosshair();
 
         // Rotate the ship based on right analog stick input
-        transform.Rotate(lookInput.y * -rotationSpeed * Time.deltaTime, 0, 0);
-        transform.Rotate(0, lookInput.x * rotationSpeed * Time.deltaTime, 0);
+        transform.Rotate(moveInput.y * -rotationSpeed * Time.deltaTime, 0, 0);
+        transform.Rotate(0, moveInput.x * rotationSpeed * Time.deltaTime, 0);
 
         // Move the ship based on left analog stick input
-        transform.Translate(transform.up * moveInput.y * movementSpeed * Time.deltaTime);
-        transform.Translate(transform.right * moveInput.x * movementSpeed * Time.deltaTime);
+        transform.Translate(transform.up * lookInput.y * movementSpeed * Time.deltaTime);
+        transform.Translate(transform.right * lookInput.x * movementSpeed * Time.deltaTime);
         
         // Move the ship forward based on right trigger input
-        if (Gamepad.current != null && Gamepad.current.rightShoulder.isPressed) { transform.Translate(transform.forward * movementSpeed * Time.deltaTime); }
+        //if (Gamepad.current != null && Gamepad.current.rightShoulder.isPressed) { transform.Translate(transform.forward * movementSpeed * Time.deltaTime); }
+        if (Gamepad.current != null && Gamepad.current.aButton.isPressed) { transform.Translate(transform.forward * movementSpeed * Time.deltaTime); }
+        
         // Move the ship backward based on left trigger input
-        if (Gamepad.current != null && Gamepad.current.leftShoulder.isPressed) { transform.Translate(transform.forward * -movementSpeed * Time.deltaTime); }
+        //if (Gamepad.current != null && Gamepad.current.leftShoulder.isPressed) { transform.Translate(transform.forward * -movementSpeed * Time.deltaTime); }
+        if (Gamepad.current != null && Gamepad.current.bButton.isPressed) { transform.Translate(transform.forward * -movementSpeed * Time.deltaTime); }
         
         // Shoot based on right trigger input
-        if (Gamepad.current != null && Gamepad.current.rightTrigger.isPressed) { Shoot(false); }
+        if (Gamepad.current != null && Gamepad.current.rightTrigger.isPressed) { Shoot(true); }
     }
     
     // This method is called by the Input System when the left analog stick is used
@@ -404,8 +409,11 @@ public class PlayerController : MonoBehaviour
     void ShootAtCursor(GameObject bullet)
     {
         //Gets the position of the mouse in the world
-        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,
-            transform.position.z + 100000));
+        /*Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,
+            transform.position.z + 100000));*/
+        Vector3 middlePoint = new Vector3(Screen.width / 2, Screen.height / 2, cam.nearClipPlane);
+        Vector3 mouseWorldPosition =
+            cam.ScreenToWorldPoint(middlePoint);
 
         // Calculate the direction from the ship to the mouse position
         Vector3 direction = (mouseWorldPosition - cam.transform.position).normalized;
@@ -440,8 +448,11 @@ public class PlayerController : MonoBehaviour
     void UpdateCrosshair()
     {
         //Gets the position of the mouse in the world
+        /*Vector3 mouseWorldPosition =
+            cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));*/
+        Vector3 middlePoint = new Vector3(Screen.width / 2, Screen.height / 2, cam.nearClipPlane);
         Vector3 mouseWorldPosition =
-            cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
+            cam.ScreenToWorldPoint(middlePoint);
 
         // Calculate the direction from the ship to the mouse position
         Vector3 direction = (mouseWorldPosition - cam.transform.position).normalized;

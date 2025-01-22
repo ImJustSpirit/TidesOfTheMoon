@@ -398,6 +398,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6228266004011052984, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6947432752079041886, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -441,6 +445,10 @@ PrefabInstance:
     - target: {fileID: 8076367335599897718, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
+      propertyPath: bulletSpeed
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 8968274407322544330, guid: a904b1e1fea455d4b95e3169de195b6c, type: 3}
       propertyPath: forwardSpeed
