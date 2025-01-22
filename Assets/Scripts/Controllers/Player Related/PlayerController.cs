@@ -6,10 +6,11 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum Playstyle {ControlShip, ControlCursor, OldWASD}
+    public enum Playstyle {ControlShip, ControlCursor, OldWASD, true3D}
     [Header ("Macro Variables")]
     public Playstyle currentPlaystyle = Playstyle.ControlShip;
 
@@ -59,6 +60,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rightRollTimer;
     public float rollBoost = 2f;
     public bool hasRolled = false;
+    
+    [Header ("Playstyle - true3D")]
+    //[SerializeField] private float forwardSpeed = 10f; // Speed at which the ship moves forward
+    [SerializeField] private float rotationSpeed = 50f; // Speed at which the ship rotates
+    private Vector2 moveInput; // Variable to store the input from the left analog stick
 
     private void Start()
     {
@@ -84,6 +90,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case Playstyle.OldWASD:
                 OldWASDUpdate();
+                break;
+            case Playstyle.true3D:
+                true3DUpdate();
                 break;
             default:
                 Debug.LogError("Invalid Playstyle");
@@ -329,6 +338,34 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
     
+    // Playstyle - true3D
+    private void true3DUpdate()
+    {
+        // Move the ship forward continuously
+        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+
+        // Rotate the ship based on input
+        //transform.rotation += Quaternion.Euler(moveInput.y * rotationSpeed * Time.deltaTime, 0, 0); // Up/down rotation
+        
+        transform.Rotate(moveInput.y * -rotationSpeed * Time.deltaTime, 0, 0);
+        transform.Rotate(0, moveInput.x * rotationSpeed * Time.deltaTime, 0);
+        //float roll = -moveInput.x * rotationSpeed * Time.deltaTime; // Left/right rotation
+
+        // Apply the rotation to the ship
+        //transform.Rotate(pitch, 0, roll);
+
+        if (Gamepad.current != null && Gamepad.current.rightTrigger.isPressed)
+        {
+            Shoot(false);
+        }
+    }
+    
+    // This method is called by the Input System when the left analog stick is used
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+    
     void Shoot(bool atCursor)
     {
         shootTimer = 0;
@@ -345,7 +382,7 @@ public class PlayerController : MonoBehaviour
             shootSide = true;
         }
 
-        GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(90, 0, 0));
+        GameObject newBullet = Instantiate(playerBullet, bulletOffset, Quaternion.Euler(transform.rotation.eulerAngles.x + 90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z));
         newBullet.GetComponent<MeshRenderer>().material.color = Color.cyan;
         newBullet.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.cyan * 5);
         newBullet.GetComponent<Bullet>().damage = 1;
@@ -357,7 +394,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            newBullet.GetComponent<Rigidbody>().linearVelocity = Vector3.forward * bulletSpeed;
+            newBullet.GetComponent<Rigidbody>().linearVelocity = transform.forward * bulletSpeed;
         }
     }
 

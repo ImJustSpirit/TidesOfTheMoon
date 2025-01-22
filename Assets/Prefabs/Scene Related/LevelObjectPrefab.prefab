@@ -5208,9 +5208,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7131701370081909742}
-  - {fileID: 8076367335599897718}
   - {fileID: 7006561077440547422}
   - {fileID: 5379981548935327499}
+  - {fileID: 8076367335599897718}
   - {fileID: 3111627520781047518}
   - {fileID: 4067729634876026937}
   - {fileID: 1985406156965450763}
@@ -5602,6 +5602,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 8488029998836263750}
+  heightOffset: 2
+  distanceOffset: 5
+  smoothSpeed: 0.125
+  rotationSmoothSpeed: 0.125
 --- !u!1001 &3198332664951226123
 PrefabInstance:
   m_ObjectHideFlags: 0
