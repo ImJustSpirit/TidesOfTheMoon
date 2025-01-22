@@ -62,9 +62,10 @@ public class PlayerController : MonoBehaviour
     public bool hasRolled = false;
     
     [Header ("Playstyle - true3D")]
-    //[SerializeField] private float forwardSpeed = 10f; // Speed at which the ship moves forward
+    [SerializeField] private float movementSpeed = 10f; // Speed at which the ship moves
     [SerializeField] private float rotationSpeed = 50f; // Speed at which the ship rotates
-    private Vector2 moveInput; // Variable to store the input from the left analog stick
+    [SerializeField] private Vector2 moveInput; // Variable to store the input from the left analog stick
+    [SerializeField] private Vector2 lookInput; // Variable to store the input from the right analog stick
 
     private void Start()
     {
@@ -74,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
         XHAIRrawImage = playerCrosshair.GetComponent<RawImage>();
 
-        GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
+        // GetComponent<Rigidbody>().linearVelocity = Vector3.forward * forwardSpeed;
     }
 
     // Update function now diverts to another function depending on chosen playstyle
@@ -92,6 +93,7 @@ public class PlayerController : MonoBehaviour
                 OldWASDUpdate();
                 break;
             case Playstyle.true3D:
+                lookInput = Gamepad.current.rightStick.ReadValue();
                 true3DUpdate();
                 break;
             default:
@@ -342,22 +344,23 @@ public class PlayerController : MonoBehaviour
     private void true3DUpdate()
     {
         // Move the ship forward continuously
-        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+        // transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
-        // Rotate the ship based on input
-        //transform.rotation += Quaternion.Euler(moveInput.y * rotationSpeed * Time.deltaTime, 0, 0); // Up/down rotation
+        // Rotate the ship based on right analog stick input
+        transform.Rotate(lookInput.y * -rotationSpeed * Time.deltaTime, 0, 0);
+        transform.Rotate(0, lookInput.x * rotationSpeed * Time.deltaTime, 0);
+
+        // Move the ship based on left analog stick input
+        transform.Translate(transform.up * moveInput.y * movementSpeed * Time.deltaTime);
+        transform.Translate(transform.right * moveInput.x * movementSpeed * Time.deltaTime);
         
-        transform.Rotate(moveInput.y * -rotationSpeed * Time.deltaTime, 0, 0);
-        transform.Rotate(0, moveInput.x * rotationSpeed * Time.deltaTime, 0);
-        //float roll = -moveInput.x * rotationSpeed * Time.deltaTime; // Left/right rotation
-
-        // Apply the rotation to the ship
-        //transform.Rotate(pitch, 0, roll);
-
-        if (Gamepad.current != null && Gamepad.current.rightTrigger.isPressed)
-        {
-            Shoot(false);
-        }
+        // Move the ship forward based on right trigger input
+        if (Gamepad.current != null && Gamepad.current.rightShoulder.isPressed) { transform.Translate(transform.forward * movementSpeed * Time.deltaTime); }
+        // Move the ship backward based on left trigger input
+        if (Gamepad.current != null && Gamepad.current.leftShoulder.isPressed) { transform.Translate(transform.forward * -movementSpeed * Time.deltaTime); }
+        
+        // Shoot based on right trigger input
+        if (Gamepad.current != null && Gamepad.current.rightTrigger.isPressed) { Shoot(false); }
     }
     
     // This method is called by the Input System when the left analog stick is used
